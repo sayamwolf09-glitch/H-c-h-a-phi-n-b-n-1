@@ -1,0 +1,351 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RoleCode {
+  ADMIN
+  TEACHER
+}
+
+enum QuestionType {
+  MULTIPLE_CHOICE
+  MATCHING
+  FILL_IN_BLANK
+  TABLE_FILL
+  SHORT_ANSWER
+  VIDEO_BASED
+}
+
+enum QuizMode {
+  FREE_PLAY
+  EXAM
+}
+
+enum AttemptStatus {
+  IN_PROGRESS
+  SUBMITTED
+  FORCED_SUBMITTED
+}
+
+enum MediaKind {
+  IMAGE
+  VIDEO
+  AUDIO
+  DOCUMENT
+}
+
+enum MediaStatus {
+  ACTIVE
+  DELETED
+  PROCESSING
+  FAILED
+}
+
+enum ReportScope {
+  CLASS
+  GRADE
+  SYSTEM
+}
+
+enum ImportJobStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+model User {
+  id            String   @id @default(cuid())
+  username      String   @unique
+  passwordHash  String
+  displayName   String
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  roles                 UserRole[]
+  teacherPermissions    TeacherClassPermission[]
+  createdQuestions      QuestionBank[]            @relation("QuestionCreatedBy")
+  createdQuizSets       QuizSet[]                 @relation("QuizSetCreatedBy")
+  generatedReports      Report[]                  @relation("ReportGeneratedBy")
+  importJobs            ImportJob[]               @relation("ImportJobCreatedBy")
+  activityLogs          ActivityLog[]             @relation("ActivityActorUser")
+  ownedMediaAssets      MediaAsset[]              @relation("MediaOwnerUser")
+}
+
+model Role {
+  id        String   @id @default(cuid())
+  code      RoleCode @unique
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users     UserRole[]
+}
+
+model UserRole {
+  id        String   @id @default(cuid())
+  userId    String
+  roleId    String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+}
+
+model ClassRoom {
+  id            String   @id @default(cuid())
+  name          String
+  grade         Int
+  academicYear  String
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  students              Student[]
+  teacherPermissions    TeacherClassPermission[]
+  quizSets              QuizSet[]
+  rankings              Ranking[]
+
+  @@unique([name, academicYear])
+}
+
+model Student {
+  id                  String   @id @default(cuid())
+  studentCode         String?  @unique
+  fullName            String
+  normalizedFullName  String
+  classRoomId         String
+  isActive            Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  classRoom           ClassRoom @relation(fields: [classRoomId], references: [id], onDelete: Restrict)
+  attempts            Attempt[]
+  rankings            Ranking[]
+}
+
+model TeacherClassPermission {
+  id                 String   @id @default(cuid())
+  teacherId          String
+  classRoomId        String
+  canManageStudents  Boolean  @default(true)
+  canManageQuestions Boolean  @default(true)
+  canViewReports     Boolean  @default(true)
+  createdAt          DateTime @default(now())
+
+  teacher            User     @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  classRoom          ClassRoom @relation(fields: [classRoomId], references: [id], onDelete: Cascade)
+
+  @@unique([teacherId, classRoomId])
+}
+
+model QuestionBank {
+  id                 String       @id @default(cuid())
+  code               String       @unique
+  title              String
+  content            String
+  questionType       QuestionType
+  difficulty         Int          @default(1)
+  subject            String       @default("Hóa học")
+  grade              Int?
+  correctAnswerText  String?
+  explanation        String?
+  isActive           Boolean      @default(true)
+  createdById        String
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+
+  createdBy          User         @relation("QuestionCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  options            QuestionOption[]
+  quizSetQuestions   QuizSetQuestion[]
+  attemptAnswers     AttemptAnswer[]
+}
+
+model QuestionOption {
+  id          String   @id @default(cuid())
+  questionId  String
+  label       String?
+  content     String
+  isCorrect   Boolean  @default(false)
+  orderIndex  Int      @default(0)
+
+  question    QuestionBank @relation(fields: [questionId], references: [id], onDelete: Cascade)
+}
+
+model QuizSet {
+  id                         String    @id @default(cuid())
+  title                      String
+  description                String?
+  mode                       QuizMode
+  classRoomId                String
+  createdById                String
+  allowRetake                Boolean   @default(true)
+  maxAttemptsPerStudent      Int?
+  requireAllQuestionsToExit  Boolean   @default(false)
+  showRankingAfterComplete   Boolean   @default(true)
+  startAt                    DateTime?
+  endAt                      DateTime?
+  isPublished                Boolean   @default(false)
+  createdAt                  DateTime  @default(now())
+  updatedAt                  DateTime  @updatedAt
+
+  classRoom                  ClassRoom @relation(fields: [classRoomId], references: [id], onDelete: Restrict)
+  createdBy                  User      @relation("QuizSetCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  quizQuestions              QuizSetQuestion[]
+  attempts                   Attempt[]
+  rankings                   Ranking[]
+}
+
+model QuizSetQuestion {
+  id          String   @id @default(cuid())
+  quizSetId   String
+  questionId  String
+  orderIndex  Int      @default(0)
+  point       Float    @default(1)
+
+  quizSet     QuizSet      @relation(fields: [quizSetId], references: [id], onDelete: Cascade)
+  question    QuestionBank @relation(fields: [questionId], references: [id], onDelete: Restrict)
+
+  @@unique([quizSetId, questionId])
+}
+
+model Attempt {
+  id                String        @id @default(cuid())
+  quizSetId         String
+  studentId         String
+  studentNameInput  String
+  mode              QuizMode
+  status            AttemptStatus @default(IN_PROGRESS)
+  startedAt         DateTime      @default(now())
+  submittedAt       DateTime?
+  durationSeconds   Int?
+  score             Float         @default(0)
+  correctCount      Int           @default(0)
+  wrongCount        Int           @default(0)
+  unansweredCount   Int           @default(0)
+  attemptNo         Int           @default(1)
+  isValid           Boolean       @default(true)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  quizSet           QuizSet       @relation(fields: [quizSetId], references: [id], onDelete: Restrict)
+  student           Student       @relation(fields: [studentId], references: [id], onDelete: Restrict)
+  answers           AttemptAnswer[]
+
+  @@unique([quizSetId, studentId, attemptNo])
+}
+
+model AttemptAnswer {
+  id                String    @id @default(cuid())
+  attemptId         String
+  questionId        String
+  answerText        String?
+  selectedOptionId  String?
+  isCorrect         Boolean?
+  scoreAwarded      Float     @default(0)
+  mediaAssetId      String?
+  answeredAt        DateTime  @default(now())
+
+  attempt           Attempt      @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question          QuestionBank @relation(fields: [questionId], references: [id], onDelete: Restrict)
+  selectedOption    QuestionOption? @relation(fields: [selectedOptionId], references: [id], onDelete: SetNull)
+  mediaAsset        MediaAsset?  @relation(fields: [mediaAssetId], references: [id], onDelete: SetNull)
+
+  @@unique([attemptId, questionId])
+}
+
+model Ranking {
+  id                  String    @id @default(cuid())
+  mode                QuizMode
+  classRoomId         String
+  grade               Int
+  quizSetId           String?
+  studentId           String
+  bestScore           Float
+  bestDurationSeconds Int?
+  attemptCount        Int       @default(0)
+  rankPosition        Int
+  computedAt          DateTime  @default(now())
+
+  classRoom           ClassRoom @relation(fields: [classRoomId], references: [id], onDelete: Cascade)
+  quizSet             QuizSet?  @relation(fields: [quizSetId], references: [id], onDelete: SetNull)
+  student             Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([mode, classRoomId, rankPosition])
+}
+
+model MediaAsset {
+  id              String      @id @default(cuid())
+  ownerUserId     String?
+  ownerStudentId  String?
+  bucket          String
+  objectKey       String      @unique
+  url             String
+  mimeType        String
+  sizeBytes       BigInt
+  kind            MediaKind
+  status          MediaStatus @default(ACTIVE)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  ownerUser       User?       @relation("MediaOwnerUser", fields: [ownerUserId], references: [id], onDelete: SetNull)
+
+  attemptAnswers  AttemptAnswer[]
+}
+
+model Report {
+  id               String      @id @default(cuid())
+  scope            ReportScope
+  classRoomId      String?
+  grade            Int?
+  generatedById    String
+  fileMediaAssetId String?
+  summaryJson      Json?
+  generatedAt      DateTime    @default(now())
+
+  generatedBy      User        @relation("ReportGeneratedBy", fields: [generatedById], references: [id], onDelete: Restrict)
+}
+
+model ImportJob {
+  id               String          @id @default(cuid())
+  createdById      String
+  classRoomId      String?
+  sourceFileName   String
+  totalRows        Int             @default(0)
+  successRows      Int             @default(0)
+  failedRows       Int             @default(0)
+  errorRowsJson    Json?
+  status           ImportJobStatus @default(PENDING)
+  startedAt        DateTime?
+  finishedAt       DateTime?
+  createdAt        DateTime        @default(now())
+
+  createdBy        User            @relation("ImportJobCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+}
+
+model ActivityLog {
+  id              String    @id @default(cuid())
+  actorUserId     String?
+  actorStudentId  String?
+  action          String
+  entityType      String
+  entityId        String?
+  metadataJson    Json?
+  createdAt       DateTime  @default(now())
+
+  actorUser       User?     @relation("ActivityActorUser", fields: [actorUserId], references: [id], onDelete: SetNull)
+}
+
+model SystemSetting {
+  key        String   @id
+  value      String
+  updatedAt  DateTime @updatedAt
+}
