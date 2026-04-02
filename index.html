@@ -1,0 +1,3170 @@
+<html lang="vi"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChemPlay Classroom - Học Hóa cùng cô Hằng</title>
+  <style>
+    :root{
+      --bg:#f4fbff;
+      --bg-2:#eefcff;
+      --card:#ffffff;
+      --text:#18324a;
+      --muted:#6c7f93;
+      --primary:#2fb7c8;
+      --primary-2:#4d8cff;
+      --accent:#7be495;
+      --warning:#ffcc66;
+      --danger:#ff6b81;
+      --success:#24b47e;
+      --shadow:0 10px 30px rgba(23,78,117,.12);
+      --radius:22px;
+      --radius-sm:14px;
+      --ring:0 0 0 3px rgba(77,140,255,.15);
+      --gradient:linear-gradient(135deg,#2fb7c8 0%,#4d8cff 45%,#8f7cff 100%);
+      --gradient-soft:linear-gradient(135deg,rgba(47,183,200,.12),rgba(77,140,255,.12),rgba(143,124,255,.12));
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;background:
+      radial-gradient(circle at 20% 10%, rgba(77,140,255,.12), transparent 22%),
+      radial-gradient(circle at 85% 12%, rgba(47,183,200,.14), transparent 18%),
+      radial-gradient(circle at 50% 92%, rgba(123,228,149,.18), transparent 26%),
+      var(--bg);
+      color:var(--text);
+      scroll-behavior:smooth;
+    }
+    body{min-height:100vh}
+    a{text-decoration:none;color:inherit}
+    button,input,select,textarea{font:inherit}
+    button{
+      border:none;cursor:pointer;border-radius:16px;padding:12px 16px;
+      transition:.22s transform,.22s box-shadow,.22s background,.22s opacity;
+    }
+    button:hover{transform:translateY(-1px)}
+    button:active{transform:translateY(0)}
+    .btn{
+      background:var(--gradient);color:#fff;box-shadow:var(--shadow);font-weight:700;
+    }
+    .btn.secondary{background:#fff;color:var(--primary-2);border:1px solid #d8e7ff}
+    .btn.ghost{background:rgba(255,255,255,.55);backdrop-filter:blur(10px);color:var(--text);border:1px solid rgba(255,255,255,.5)}
+    .btn.success{background:linear-gradient(135deg,#1dbf73,#55d69b)}
+    .btn.danger{background:linear-gradient(135deg,#ff758c,#ff5d7c)}
+    .btn.warning{background:linear-gradient(135deg,#ffbf47,#ffa94d);color:#3a2f00}
+    .btn.small{padding:9px 12px;border-radius:12px;font-size:.92rem}
+    .btn.block{width:100%}
+    .btn.icon{display:inline-flex;align-items:center;gap:8px}
+
+    .container{width:min(1200px,calc(100% - 24px));margin:0 auto}
+    .site-header{
+      position:sticky;top:0;z-index:50;
+      backdrop-filter:blur(16px);
+      background:rgba(244,251,255,.78);
+      border-bottom:1px solid rgba(77,140,255,.10)
+    }
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:12px 0;gap:12px
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand-logo{
+      width:48px;height:48px;border-radius:16px;background:var(--gradient);
+      display:grid;place-items:center;color:#fff;font-size:1.35rem;box-shadow:var(--shadow)
+    }
+    .brand-text h1{
+      margin:0;font-size:1.05rem;line-height:1.15
+    }
+    .brand-text p{
+      margin:3px 0 0;color:var(--muted);font-size:.9rem
+    }
+    .nav-actions{display:flex;flex-wrap:wrap;gap:10px}
+
+    .hero{
+      padding:28px 0 18px;
+    }
+    .hero-grid{
+      display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:stretch
+    }
+    .glass{
+      background:rgba(255,255,255,.72);
+      backdrop-filter:blur(14px);
+      border:1px solid rgba(255,255,255,.7);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+    }
+    .hero-card{
+      padding:28px;position:relative;overflow:hidden
+    }
+    .hero-card::before,
+    .hero-card::after{
+      content:"";position:absolute;border-radius:999px;opacity:.18;pointer-events:none
+    }
+    .hero-card::before{
+      width:180px;height:180px;right:-30px;top:-30px;
+      background:radial-gradient(circle, #4d8cff 0%, transparent 70%);
+    }
+    .hero-card::after{
+      width:180px;height:180px;left:-30px;bottom:-50px;
+      background:radial-gradient(circle, #2fb7c8 0%, transparent 70%);
+    }
+    .hero-title{
+      font-size:clamp(1.7rem,3vw,2.8rem);line-height:1.14;margin:0 0 12px
+    }
+    .hero-sub{
+      color:var(--muted);margin:0 0 20px;font-size:1rem;line-height:1.7;max-width:720px
+    }
+    .hero-badges{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+    .badge{
+      padding:10px 14px;border-radius:999px;background:var(--gradient-soft);
+      color:#295274;font-weight:700;font-size:.92rem;border:1px solid rgba(77,140,255,.12)
+    }
+    .hero-cta{display:flex;flex-wrap:wrap;gap:12px}
+    .hero-side{
+      padding:22px;display:flex;flex-direction:column;justify-content:space-between;gap:12px
+    }
+    .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .mini-stat{
+      background:#fff;border-radius:20px;padding:16px;border:1px solid #ecf4ff;box-shadow:0 6px 20px rgba(31,64,107,.06)
+    }
+    .mini-stat b{font-size:1.35rem;display:block}
+    .mini-stat span{color:var(--muted);font-size:.92rem}
+    .chem-art{
+      min-height:150px;border-radius:24px;background:
+        radial-gradient(circle at 30% 30%, rgba(123,228,149,.6) 0 6px, transparent 8px),
+        radial-gradient(circle at 70% 35%, rgba(77,140,255,.65) 0 10px, transparent 12px),
+        radial-gradient(circle at 45% 70%, rgba(47,183,200,.55) 0 14px, transparent 16px),
+        linear-gradient(135deg,#e8f7ff,#f8f8ff);
+      position:relative;overflow:hidden;border:1px solid #e7f1ff
+    }
+    .chem-art .flask,.chem-art .tube,.chem-art .atom{
+      position:absolute;border-radius:999px;border:3px solid rgba(49,101,145,.18)
+    }
+    .chem-art .atom{
+      width:95px;height:95px;left:20px;top:24px;
+      border-style:dashed;animation:spin 16s linear infinite
+    }
+    .chem-art .atom::before,.chem-art .atom::after{
+      content:"";position:absolute;inset:0;border-radius:999px;border:3px dashed rgba(77,140,255,.22);transform:rotate(65deg)
+    }
+    .chem-art .atom::after{transform:rotate(-65deg)}
+    .chem-art .flask{
+      width:70px;height:110px;right:28px;bottom:16px;border-radius:16px 16px 28px 28px;
+      background:linear-gradient(to top, rgba(47,183,200,.22) 0 45%, transparent 45% 100%);
+    }
+    .chem-art .flask::before{
+      content:"";position:absolute;left:20px;right:20px;top:-18px;height:24px;border-radius:12px;background:#fff;border:3px solid rgba(49,101,145,.18)
+    }
+    .chem-art .tube{
+      width:32px;height:96px;right:120px;top:18px;border-radius:18px;background:linear-gradient(to top, rgba(123,228,149,.30) 0 60%, transparent 60% 100%);
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .section{padding:18px 0}
+    .tabs{
+      display:flex;gap:10px;flex-wrap:wrap;padding:8px;background:rgba(255,255,255,.52);
+      border-radius:20px;border:1px solid rgba(77,140,255,.08)
+    }
+    .tab{
+      padding:12px 16px;border-radius:14px;background:transparent;font-weight:700;color:#4b6279
+    }
+    .tab.active{background:#fff;box-shadow:var(--shadow);color:var(--primary-2)}
+
+    .layout{display:grid;grid-template-columns:280px 1fr;gap:18px;margin-top:18px}
+    .sidebar{padding:18px;position:sticky;top:88px;height:fit-content}
+    .sidebar h3{margin:0 0 8px}
+    .sidebar p{margin:0 0 14px;color:var(--muted)}
+    .menu{display:grid;gap:8px}
+    .menu button{text-align:left;background:#fff;border:1px solid #edf3ff;color:#314b66}
+    .menu button.active{background:var(--gradient);color:#fff;border:none;box-shadow:var(--shadow)}
+
+    .content{display:grid;gap:18px}
+    .card{
+      background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+      padding:18px;border:1px solid #edf3ff
+    }
+    .card h2,.card h3,.card h4{margin:0 0 12px}
+    .muted{color:var(--muted)}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+
+    .form-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
+    .field{display:grid;gap:7px}
+    .field label{font-weight:700;font-size:.95rem}
+    .field input,.field textarea,.field select{
+      width:100%;padding:12px 14px;border-radius:14px;border:1px solid #dbe9ff;background:#fbfdff;color:var(--text);
+      outline:none;transition:.2s border,.2s box-shadow,.2s background
+    }
+    .field input:focus,.field textarea:focus,.field select:focus{
+      border-color:#8db2ff;box-shadow:var(--ring);background:#fff
+    }
+    .span-12{grid-column:span 12}.span-8{grid-column:span 8}.span-6{grid-column:span 6}.span-4{grid-column:span 4}.span-3{grid-column:span 3}
+    textarea{min-height:96px;resize:vertical}
+
+    .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .toolbar .left,.toolbar .right{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .search{
+      display:flex;align-items:center;gap:8px;background:#fbfdff;border:1px solid #dbe9ff;padding:10px 12px;border-radius:14px
+    }
+    .search input{border:none;outline:none;background:transparent;min-width:160px;color:var(--text)}
+
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:12px 10px;border-bottom:1px solid #edf3ff;text-align:left;vertical-align:top}
+    th{font-size:.92rem;color:#4c627a;background:#f8fbff}
+    tr:hover td{background:#fcfeff}
+    .table-wrap{overflow:auto;border-radius:18px;border:1px solid #edf3ff}
+    .pill{
+      display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border-radius:999px;font-weight:700;font-size:.82rem
+    }
+    .pill.done{background:rgba(36,180,126,.13);color:#158a5d}
+    .pill.pending{background:rgba(255,204,102,.18);color:#a56b00}
+    .pill.not-started{background:rgba(77,140,255,.12);color:#3565b8}
+    .pill.in-progress{background:rgba(143,124,255,.13);color:#6555d8}
+
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .stat{
+      padding:16px;border-radius:22px;background:linear-gradient(180deg,#fff,#f9fcff);border:1px solid #edf3ff
+    }
+    .stat .k{font-size:1.8rem;font-weight:800}
+    .stat .t{color:var(--muted);font-size:.94rem}
+    .stat .delta{margin-top:8px;font-size:.88rem;color:#2f6fb4}
+
+    .chart-box{
+      padding:14px;border-radius:20px;background:#fbfdff;border:1px solid #edf3ff
+    }
+    canvas{width:100%;height:auto;display:block}
+
+    .student-entry{
+      display:grid;grid-template-columns:1fr 1fr auto;gap:12px
+    }
+
+    .question-shell{
+      padding:18px;border-radius:24px;background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid #edf3ff
+    }
+    .q-header{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+    .q-type{
+      padding:7px 10px;border-radius:999px;background:var(--gradient-soft);font-weight:700;font-size:.85rem;color:#32506b
+    }
+    .progress-wrap{
+      margin:10px 0 16px;background:#edf5ff;border-radius:999px;height:12px;overflow:hidden
+    }
+    .progress-bar{
+      height:100%;background:var(--gradient);width:0%;transition:.35s width;border-radius:999px
+    }
+
+    .options{display:grid;gap:12px;margin-top:14px}
+    .option{
+      padding:14px;border-radius:16px;border:1px solid #dbe9ff;background:#fff;cursor:pointer;font-weight:600
+    }
+    .option.active{border-color:#7ea9ff;box-shadow:var(--ring);background:#f5f9ff}
+    .option.correct{background:rgba(36,180,126,.10);border-color:rgba(36,180,126,.5)}
+    .option.wrong{background:rgba(255,107,129,.10);border-color:rgba(255,107,129,.4)}
+
+    .match-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .match-col{display:grid;gap:10px}
+    .match-item{
+      padding:12px 14px;border-radius:16px;background:#fff;border:1px solid #dbe9ff;cursor:pointer;font-weight:600
+    }
+    .match-item.active{box-shadow:var(--ring);border-color:#7ea9ff;background:#f5f9ff}
+    .match-item.matched{background:rgba(36,180,126,.12);border-color:rgba(36,180,126,.45)}
+    .pair-list{display:grid;gap:8px;margin-top:12px}
+    .pair-chip{
+      padding:10px 12px;border-radius:14px;background:#f8fbff;border:1px dashed #cddfff;color:#48617b
+    }
+
+    .fill-blank{font-size:1.08rem;line-height:1.9}
+    .inline-input{
+      display:inline-block;min-width:180px;vertical-align:middle;margin:0 6px
+    }
+
+    .table-blank-wrap{overflow:auto}
+    .table-blank{
+      width:100%;min-width:500px;border-collapse:separate;border-spacing:0
+    }
+    .table-blank th,.table-blank td{
+      border:1px solid #dbe9ff;padding:12px;background:#fff
+    }
+    .table-blank th{background:#f6fbff}
+    .table-blank input{
+      width:100%;padding:10px 12px;border-radius:10px;border:1px solid #dbe9ff
+    }
+
+    .feedback{
+      margin-top:14px;padding:14px 16px;border-radius:18px;font-weight:700
+    }
+    .feedback.success{background:rgba(36,180,126,.12);color:#158a5d}
+    .feedback.fail{background:rgba(255,107,129,.12);color:#c73f59}
+    .feedback.info{background:rgba(77,140,255,.11);color:#386cc0}
+
+    .footer{
+      margin-top:26px;padding:28px 0 40px;color:#55718d
+    }
+    .footer-card{
+      padding:20px;border-radius:24px;background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.7);box-shadow:var(--shadow)
+    }
+
+    .empty{
+      padding:24px;border-radius:20px;background:#fbfdff;border:1px dashed #d6e6ff;color:#667d95;text-align:center
+    }
+
+    .floating-music{
+      position:fixed;right:16px;bottom:16px;z-index:60;
+      display:flex;gap:10px;align-items:center
+    }
+    .fab{
+      width:56px;height:56px;border-radius:18px;display:grid;place-items:center;
+      background:var(--gradient);color:#fff;box-shadow:var(--shadow);font-size:1.1rem
+    }
+
+    .toast-wrap{
+      position:fixed;top:90px;right:16px;z-index:100;display:grid;gap:10px;max-width:min(92vw,360px)
+    }
+    .toast{
+      background:rgba(255,255,255,.95);backdrop-filter:blur(14px);border:1px solid #e5f0ff;
+      border-left:6px solid var(--primary);padding:14px 16px;border-radius:18px;box-shadow:var(--shadow);
+      animation:toastIn .28s ease
+    }
+    .toast.success{border-left-color:var(--success)}
+    .toast.error{border-left-color:var(--danger)}
+    .toast.warning{border-left-color:#ffb443}
+    @keyframes toastIn{
+      from{opacity:0;transform:translateY(-6px) translateX(10px)}
+      to{opacity:1;transform:translateY(0) translateX(0)}
+    }
+
+    .modal{
+      position:fixed;inset:0;background:rgba(17,33,56,.36);display:none;align-items:center;justify-content:center;
+      z-index:110;padding:18px
+    }
+    .modal.show{display:flex}
+    .modal-panel{
+      width:min(840px,100%);max-height:90vh;overflow:auto;border-radius:28px;background:#fff;box-shadow:0 24px 60px rgba(17,33,56,.24);
+      padding:20px;border:1px solid #eef4ff
+    }
+    .modal-head{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px
+    }
+
+    .confirm-box{padding:10px 0}
+    .shake{animation:shake .34s}
+    .glow{animation:glow .48s}
+    @keyframes shake{
+      0%,100%{transform:translateX(0)}
+      20%{transform:translateX(-4px)}
+      40%{transform:translateX(4px)}
+      60%{transform:translateX(-3px)}
+      80%{transform:translateX(3px)}
+    }
+    @keyframes glow{
+      0%{box-shadow:0 0 0 rgba(36,180,126,0)}
+      50%{box-shadow:0 0 0 8px rgba(36,180,126,.13)}
+      100%{box-shadow:0 0 0 rgba(36,180,126,0)}
+    }
+
+    .accordion{display:grid;gap:10px}
+    .accordion-item{
+      border:1px solid #e6f0ff;border-radius:18px;overflow:hidden;background:#fff
+    }
+    .accordion-head{
+      width:100%;background:#fbfdff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;color:#32506b;font-weight:700
+    }
+    .accordion-body{display:none;padding:14px 16px;border-top:1px solid #edf3ff}
+    .accordion-item.open .accordion-body{display:block}
+
+    .code-box{
+      padding:14px;border-radius:18px;background:#0f2237;color:#d5e8ff;overflow:auto;font-size:.92rem;line-height:1.6
+    }
+    .small-note{font-size:.9rem;color:var(--muted)}
+    .top-students{display:grid;gap:10px}
+    .top-item{
+      display:flex;justify-content:space-between;gap:10px;align-items:center;padding:12px 14px;border-radius:16px;border:1px solid #edf3ff;background:#fff
+    }
+
+    @media (max-width: 960px){
+      .hero-grid,.layout,.grid-2,.grid-3,.stats-row{grid-template-columns:1fr}
+      .grid-4{grid-template-columns:1fr 1fr}
+      .sidebar{position:static}
+      .student-entry{grid-template-columns:1fr}
+      .match-grid{grid-template-columns:1fr}
+    }
+    @media (max-width: 680px){
+      .hero-card,.hero-side,.card,.sidebar,.footer-card{padding:16px}
+      .brand-text h1{font-size:1rem}
+      .hero-title{font-size:1.65rem}
+      .grid-4,.mini-grid{grid-template-columns:1fr}
+      .span-8,.span-6,.span-4,.span-3,.span-12{grid-column:span 12}
+      .nav{align-items:flex-start}
+      .nav-actions{justify-content:flex-end}
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+        
+        <header class="site-header">
+          <div class="container nav">
+            <div class="brand">
+              <div class="brand-logo">⚗️</div>
+              <div class="brand-text">
+                <h1>ChemPlay Classroom - Học Hóa cùng cô Hằng</h1>
+                <p>Web app trò chơi học tập online cho lớp 6–8</p>
+              </div>
+            </div>
+            <div class="nav-actions">
+              <button class="btn secondary small" data-nav="home">Trang chủ</button>
+              <button class="btn secondary small" data-nav="teacher">Khu vực giáo viên</button>
+              <button class="btn small" data-nav="student">Khu vực học sinh</button>
+            </div>
+          </div>
+        </header>
+      
+        <main class="container">
+          
+        <section class="hero">
+          <div class="hero-grid">
+            <div class="glass hero-card">
+              <div class="hero-badges">
+                <span class="badge">🎓 Giáo dục hiện đại</span>
+                <span class="badge">🧪 Theme Hóa học tươi sáng</span>
+                <span class="badge">📱 Responsive mọi thiết bị</span>
+              </div>
+              <h2 class="hero-title">Biến tiết học Hóa/KHTN thành trải nghiệm tương tác vui, rõ, dễ theo dõi.</h2>
+              <p class="hero-sub">
+                Tạo lớp, quản lí danh sách học sinh, giao bài với 4 dạng trò chơi, theo dõi tiến độ làm bài, phân tích kết quả theo lớp và theo từng câu hỏi. 
+                Học sinh chỉ cần nhập tên và mã lớp để bắt đầu.
+              </p>
+              <div class="hero-cta">
+                <button class="btn icon" data-nav="teacher">👩‍🏫 Vào dashboard giáo viên</button>
+                <button class="btn secondary icon" data-nav="student">🧑‍🎓 Bắt đầu làm bài</button>
+                <button class="btn ghost icon" id="restoreDataBtn">♻️ Khôi phục dữ liệu mẫu</button>
+              </div>
+            </div>
+            <div class="glass hero-side">
+              <div class="mini-grid">
+                <div class="mini-stat">
+                  <b>6</b>
+                  <span>Lớp học mẫu sẵn sàng</span>
+                </div>
+                <div class="mini-stat">
+                  <b>66</b>
+                  <span>Học sinh đang quản lí</span>
+                </div>
+                <div class="mini-stat">
+                  <b>48</b>
+                  <span>Câu hỏi trong ngân hàng</span>
+                </div>
+                <div class="mini-stat">
+                  <b>62</b>
+                  <span>Lượt làm được lưu</span>
+                </div>
+              </div>
+              <div class="chem-art">
+                <div class="atom"></div>
+                <div class="tube"></div>
+                <div class="flask"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      
+          
+        <section class="section">
+          <div class="tabs">
+            <button class="tab " data-nav="home">Tổng quan</button>
+            <button class="tab active" data-nav="teacher">Dashboard giáo viên</button>
+            <button class="tab " data-nav="student">Giao diện học sinh</button>
+          </div>
+        </section>
+      
+          
+          
+        <section class="section">
+          <div class="layout">
+            <aside class="glass sidebar">
+              <h3>Khu vực giáo viên</h3>
+              <p>Quản lí lớp, học sinh, câu hỏi, thống kê và triển khai web công khai.</p>
+              <div class="menu">
+                <button class="active" data-teacher-menu="dashboard">📈 Dashboard</button>
+                <button class="" data-teacher-menu="classes">🏫 Quản lí lớp</button>
+                <button class="" data-teacher-menu="students">👥 Danh sách học sinh</button>
+                <button class="" data-teacher-menu="questions">❓ Ngân hàng câu hỏi</button>
+                <button class="" data-teacher-menu="reports">📊 Báo cáo kết quả</button>
+                <button class="" data-teacher-menu="deploy">🚀 Triển khai công khai</button>
+              </div>
+            </aside>
+            <div class="content">
+              
+        <div class="card">
+          <div class="toolbar">
+            <div class="left">
+              <h2>Dashboard lớp học</h2>
+            </div>
+            <div class="right">
+              <button class="btn secondary small" id="downloadHtmlBtn">Tải mã nguồn HTML</button>
+              <button class="btn small" id="copyDeployGuideBtn">Sao chép hướng dẫn đăng web công khai</button>
+            </div>
+          </div>
+          <div class="stats-row">
+            <div class="stat">
+              <div class="k">6</div>
+              <div class="t">Tổng số lớp</div>
+              <div class="delta">Sẵn sàng quản lí</div>
+            </div>
+            <div class="stat">
+              <div class="k">66</div>
+              <div class="t">Tổng số học sinh</div>
+              <div class="delta">Theo danh sách lớp</div>
+            </div>
+            <div class="stat">
+              <div class="k">48</div>
+              <div class="t">Câu hỏi trò chơi</div>
+              <div class="delta">Đa dạng 4 dạng bài</div>
+            </div>
+            <div class="stat">
+              <div class="k">62</div>
+              <div class="t">Tổng lượt làm</div>
+              <div class="delta">Lưu tự động bằng localStorage</div>
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-top:16px">
+            <div class="chart-box">
+              <h4>Tỉ lệ đã làm / chưa làm</h4>
+              <canvas id="completionChart" width="520" height="260"></canvas>
+            </div>
+            <div class="chart-box">
+              <h4>Điểm trung bình theo lớp</h4>
+              <canvas id="avgChart" width="520" height="260"></canvas>
+            </div>
+            <div class="chart-box">
+              <h4>Tỉ lệ đúng theo dạng bài</h4>
+              <canvas id="typeChart" width="520" height="260"></canvas>
+            </div>
+            <div class="chart-box">
+              <h4>Top học sinh nổi bật</h4>
+              <canvas id="topChart" width="520" height="260"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Lớp học đang có</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Mã lớp</th>
+                  <th>Tên lớp</th>
+                  <th>Mô tả</th>
+                  <th>Học sinh</th>
+                  <th>Câu hỏi</th>
+                  <th>Lượt làm</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                
+                  <tr>
+                    <td><strong>6A1</strong></td>
+                    <td>Lớp 6A1</td>
+                    <td>Khởi động với chủ đề vật thể, chất và an toàn phòng thí nghiệm.</td>
+                    <td>12</td>
+                    <td>8</td>
+                    <td>12</td>
+                    <td><button class="btn secondary small" data-pick-class="cl_sklx77owbf4">Chọn lớp</button></td>
+                  </tr>
+                
+                  <tr>
+                    <td><strong>6A2</strong></td>
+                    <td>Lớp 6A2</td>
+                    <td>Ôn tập trạng thái của chất, hỗn hợp và dung dịch.</td>
+                    <td>10</td>
+                    <td>8</td>
+                    <td>9</td>
+                    <td><button class="btn secondary small" data-pick-class="cl_kn772cuwbf6">Chọn lớp</button></td>
+                  </tr>
+                
+                  <tr>
+                    <td><strong>6A3</strong></td>
+                    <td>Lớp 6A3</td>
+                    <td>Làm quen với dụng cụ thí nghiệm và hiện tượng vật lí.</td>
+                    <td>10</td>
+                    <td>8</td>
+                    <td>9</td>
+                    <td><button class="btn secondary small" data-pick-class="cl_z9wxm9cwbf6">Chọn lớp</button></td>
+                  </tr>
+                
+                  <tr>
+                    <td><strong>7A1</strong></td>
+                    <td>Lớp 7A1</td>
+                    <td>Củng cố nguyên tử, phân tử và biến đổi của chất.</td>
+                    <td>11</td>
+                    <td>8</td>
+                    <td>10</td>
+                    <td><button class="btn secondary small" data-pick-class="cl_thxot18wbf6">Chọn lớp</button></td>
+                  </tr>
+                
+                  <tr>
+                    <td><strong>7A2</strong></td>
+                    <td>Lớp 7A2</td>
+                    <td>Mở rộng nội dung hiện tượng hóa học, an toàn và thực hành.</td>
+                    <td>11</td>
+                    <td>8</td>
+                    <td>10</td>
+                    <td><button class="btn secondary small" data-pick-class="cl_d0mzk6dwbf6">Chọn lớp</button></td>
+                  </tr>
+                
+                  <tr>
+                    <td><strong>8A1</strong></td>
+                    <td>Lớp 8A1</td>
+                    <td>Khảo sát sâu hơn về chất, dung dịch và nhận biết hiện tượng.</td>
+                    <td>12</td>
+                    <td>8</td>
+                    <td>12</td>
+                    <td><button class="btn secondary small" data-pick-class="cl_ucr750hwbf7">Chọn lớp</button></td>
+                  </tr>
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+      
+              
+              
+              
+              
+              
+            </div>
+          </div>
+        </section>
+      
+          
+          
+        <footer class="footer">
+          <div class="footer-card">
+            <strong>ChemPlay Classroom - Học Hóa cùng cô Hằng</strong>
+            <p style="margin:8px 0 0">
+              Web app học tập online 1 file HTML • Lưu bằng localStorage • Hỗ trợ tiếng Việt có dấu • Sẵn sàng dùng để dạy học và demo thực tế.
+            </p>
+          </div>
+        </footer>
+      
+        </main>
+      </div>
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <div class="modal" id="modal">
+    <div class="modal-panel">
+      <div class="modal-head">
+        <h3 id="modalTitle">Tiêu đề</h3>
+        <button class="btn secondary small" onclick="closeModal()">Đóng</button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <div class="floating-music">
+    <button class="fab" id="musicBtn" title="Bật/tắt nhạc nền">🎵</button>
+  </div>
+
+  <script>
+    /* =========================================================
+       ChemPlay Classroom - Học Hóa cùng cô Hằng
+       Toàn bộ web app nằm trong 1 file HTML
+       Dữ liệu lưu bằng localStorage
+       Code comment bằng tiếng Việt, dễ sửa
+    ========================================================== */
+
+    /* =========================
+       HẰNG SỐ & TRẠNG THÁI
+    ========================== */
+    const STORAGE_KEY = 'chemplay-classroom-v1';
+    const DEFAULT_SOURCE_FILENAME = 'index.html';
+
+    const appState = {
+      data: null,
+      view: 'home', // home | teacher | student
+      teacherMenu: 'dashboard', // dashboard | classes | students | questions | reports | deploy
+      selectedClassId: null,
+      studentSession: null,
+      musicEnabled: false,
+      audioCtx: null,
+      backgroundMusicTimer: null,
+      currentSearch: '',
+      currentStatusFilter: 'all',
+      questionFilterType: 'all',
+      questionClassFilter: 'all'
+    };
+
+    /* =========================
+       TIỆN ÍCH CHUNG
+    ========================== */
+    const $ = (sel, parent = document) => parent.querySelector(sel);
+    const $$ = (sel, parent = document) => [...parent.querySelectorAll(sel)];
+    const uid = (prefix='id') => `${prefix}_${Math.random().toString(36).slice(2,9)}${Date.now().toString(36).slice(-4)}`;
+    const deepClone = obj => JSON.parse(JSON.stringify(obj));
+    const nowISO = () => new Date().toISOString();
+    const formatDateTime = (iso) => {
+      if(!iso) return '—';
+      const d = new Date(iso);
+      if(Number.isNaN(d.getTime())) return '—';
+      return d.toLocaleString('vi-VN');
+    };
+    const csvEscape = (val) => {
+      const s = String(val ?? '');
+      return `"${s.replace(/"/g,'""')}"`;
+    };
+    const normalizeText = (s='') => String(s).trim().toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .replace(/\s+/g,' ');
+    const safeHtml = (s='') => String(s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+      .replace(/'/g,'&#39;');
+
+    const friendlyPraise = [
+      'Giỏi lắm!', 'Xuất sắc!', 'Rất tốt!', 'Tuyệt vời!', 'Cố lên, gần xong rồi!', 'Bạn làm tốt lắm!'
+    ];
+
+    function pick(arr){ return arr[Math.floor(Math.random()*arr.length)] }
+
+    function toast(message, type='success', timeout=2800){
+      const wrap = $('#toastWrap');
+      const el = document.createElement('div');
+      el.className = `toast ${type}`;
+      el.innerHTML = `<strong>${type === 'error' ? 'Lưu ý' : type === 'warning' ? 'Thông báo' : 'ChemPlay'}</strong><div style="margin-top:6px">${safeHtml(message)}</div>`;
+      wrap.appendChild(el);
+      setTimeout(()=>{ el.style.opacity='0'; el.style.transform='translateX(8px)'; }, timeout - 300);
+      setTimeout(()=> el.remove(), timeout);
+    }
+
+    function openModal(title, bodyHTML){
+      $('#modalTitle').textContent = title;
+      $('#modalBody').innerHTML = bodyHTML;
+      $('#modal').classList.add('show');
+    }
+    function closeModal(){
+      $('#modal').classList.remove('show');
+    }
+    window.closeModal = closeModal;
+
+    function confirmAction(title, content, onConfirm){
+      openModal(title, `
+        <div class="confirm-box">
+          <p class="muted" style="margin-top:0">${content}</p>
+          <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px">
+            <button class="btn secondary" onclick="closeModal()">Hủy</button>
+            <button class="btn danger" id="confirmBtn">Xác nhận xóa</button>
+          </div>
+        </div>
+      `);
+      setTimeout(()=>{
+        const btn = $('#confirmBtn');
+        if(btn){
+          btn.onclick = () => {
+            closeModal();
+            onConfirm();
+          };
+        }
+      }, 0);
+    }
+
+    function downloadTextFile(filename, content, type='text/plain;charset=utf-8'){
+      const blob = new Blob([content], {type});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+      setTimeout(()=>URL.revokeObjectURL(url), 1000);
+    }
+
+    async function copyText(text){
+      try{
+        await navigator.clipboard.writeText(text);
+        toast('Đã sao chép vào bộ nhớ tạm.');
+      }catch(e){
+        toast('Không thể sao chép tự động. Vui lòng sao chép thủ công.', 'warning');
+      }
+    }
+
+    function setStorage(data){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+    function getStorage(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    }
+
+    /* =========================
+       DỮ LIỆU MẪU
+    ========================== */
+    function makeSampleQuestions(levelLabel='6'){
+      return [
+        {
+          id: uid('q'),
+          type: 'mcq',
+          title: 'Nhận biết chất tinh khiết',
+          prompt: 'Trong các lựa chọn sau, đâu là chất tinh khiết?',
+          options: ['Nước khoáng', 'Không khí', 'Oxi', 'Nước muối'],
+          answer: 2,
+          explanation: 'Oxi là một chất tinh khiết, còn các đáp án khác là hỗn hợp.'
+        },
+        {
+          id: uid('q'),
+          type: 'mcq',
+          title: 'An toàn phòng thí nghiệm',
+          prompt: 'Khi làm thí nghiệm, em nên làm gì trước tiên?',
+          options: ['Tự ý nếm hóa chất', 'Đọc kĩ hướng dẫn an toàn', 'Chạy quanh phòng', 'Để tóc xõa gần lửa'],
+          answer: 1,
+          explanation: 'Đọc kĩ hướng dẫn an toàn là bước rất quan trọng trước khi làm thí nghiệm.'
+        },
+        {
+          id: uid('q'),
+          type: 'matching',
+          title: 'Nối trạng thái của chất',
+          prompt: 'Ghép tên trạng thái với đặc điểm phù hợp.',
+          leftItems: ['Rắn', 'Lỏng', 'Khí'],
+          rightItems: ['Không có hình dạng xác định, dễ nén', 'Có hình dạng xác định', 'Có thể chảy và lấy hình dạng của vật chứa'],
+          answerPairs: [
+            ['Rắn', 'Có hình dạng xác định'],
+            ['Lỏng', 'Có thể chảy và lấy hình dạng của vật chứa'],
+            ['Khí', 'Không có hình dạng xác định, dễ nén']
+          ],
+          explanation: 'Mỗi trạng thái chất có đặc điểm riêng về hình dạng và thể tích.'
+        },
+        {
+          id: uid('q'),
+          type: 'fill',
+          title: 'Điền từ khái niệm',
+          prompt: 'Đơn vị nhỏ bé cấu tạo nên chất là ____.',
+          answers: ['nguyen tu', 'nguyên tử'],
+          explanation: 'Nguyên tử là hạt vô cùng nhỏ cấu tạo nên các chất.'
+        },
+        {
+          id: uid('q'),
+          type: 'table',
+          title: 'Điền bảng dụng cụ thí nghiệm',
+          prompt: 'Hoàn thành bảng công dụng dụng cụ thí nghiệm.',
+          table: {
+            headers: ['Dụng cụ', 'Công dụng'],
+            rows: [
+              ['Ống nghiệm', ''],
+              ['Cốc thủy tinh', ''],
+              ['Kẹp gỗ', '']
+            ]
+          },
+          tableAnswers: [
+            ['dung de chua hoa chat, lam thi nghiem nho', 'đựng hóa chất, làm thí nghiệm nhỏ'],
+            ['dung de chua, tron dung dich', 'đựng, trộn dung dịch'],
+            ['dung de kep ong nghiem nong', 'kẹp ống nghiệm nóng']
+          ],
+          explanation: 'Mỗi dụng cụ có chức năng riêng khi học trong phòng thí nghiệm.'
+        },
+        {
+          id: uid('q'),
+          type: 'mcq',
+          title: 'Hiện tượng vật lí',
+          prompt: 'Hiện tượng nào sau đây là hiện tượng vật lí?',
+          options: ['Đốt giấy', 'Sắt bị gỉ', 'Nước đá tan', 'Nến cháy'],
+          answer: 2,
+          explanation: 'Nước đá tan chỉ thay đổi trạng thái, không tạo chất mới.'
+        },
+        {
+          id: uid('q'),
+          type: 'fill',
+          title: 'Phân tử',
+          prompt: 'Nhóm các nguyên tử liên kết với nhau tạo thành ____.',
+          answers: ['phan tu', 'phân tử'],
+          explanation: 'Phân tử được tạo nên từ một hay nhiều nguyên tử liên kết với nhau.'
+        },
+        {
+          id: uid('q'),
+          type: 'mcq',
+          title: 'Hỗn hợp và dung dịch',
+          prompt: 'Nước muối là ví dụ của:',
+          options: ['Chất tinh khiết', 'Dung dịch', 'Nguyên tố', 'Đơn chất kim loại'],
+          answer: 1,
+          explanation: 'Nước muối là dung dịch vì muối tan trong nước.'
+        }
+      ];
+    }
+
+    function createSampleStudents(prefix){
+      return [
+        `${prefix} An`, `${prefix} Bình`, `${prefix} Chi`, `${prefix} Duy`, `${prefix} Giang`, `${prefix} Hân`,
+        `${prefix} Khánh`, `${prefix} Linh`, `${prefix} Minh`, `${prefix} Nam`, `${prefix} Phương`, `${prefix} Vy`
+      ].slice(0, 8 + Math.floor(Math.random()*5)).map(name => ({
+        id: uid('st'),
+        name,
+        note: '',
+        createdAt: nowISO()
+      }));
+    }
+
+    function createClass(code, name, desc){
+      return {
+        id: uid('cl'),
+        code,
+        name,
+        description: desc,
+        students: createSampleStudents(name.replace(/\s+/g,'').slice(0,2)),
+        questions: makeSampleQuestions(code[0]),
+        results: [],
+        createdAt: nowISO()
+      };
+    }
+
+    function seedSampleResults(classes){
+      classes.forEach(cls => {
+        const totalQ = cls.questions.length;
+        cls.students.forEach((st, idx) => {
+          const randomState = idx % 4;
+          let attempts = [];
+          if(randomState === 0){
+            // chưa làm
+            attempts = [];
+          }else if(randomState === 1){
+            // làm dở
+            const answeredCount = Math.max(2, Math.floor(totalQ/2));
+            attempts = [{
+              id: uid('res'),
+              studentId: st.id,
+              studentName: st.name,
+              classId: cls.id,
+              classCode: cls.code,
+              startedAt: nowISO(),
+              finishedAt: '',
+              status: 'in-progress',
+              score: Math.floor(answeredCount*10/totalQ),
+              correctCount: Math.floor(answeredCount*0.6),
+              totalQuestions: totalQ,
+              percent: Math.round((answeredCount/totalQ)*100),
+              lastQuestionIndex: answeredCount-1,
+              answers: {},
+              perQuestion: []
+            }];
+          }else{
+            const attemptCount = randomState === 2 ? 1 : 2;
+            for(let k=0;k<attemptCount;k++){
+              const correctCount = Math.max(3, Math.min(totalQ, Math.floor(totalQ*(0.45 + Math.random()*0.45))));
+              const score = Math.round(correctCount*10/totalQ);
+              const perQuestion = cls.questions.map((q, qIndex) => ({
+                questionId: q.id,
+                title: q.title,
+                type: q.type,
+                correct: qIndex < correctCount
+              })).sort(()=>Math.random()-.5);
+              attempts.push({
+                id: uid('res'),
+                studentId: st.id,
+                studentName: st.name,
+                classId: cls.id,
+                classCode: cls.code,
+                startedAt: new Date(Date.now() - (idx+k+1)*86400000).toISOString(),
+                finishedAt: new Date(Date.now() - (idx+k+1)*86400000 + 12*60000).toISOString(),
+                status: 'completed',
+                score,
+                correctCount,
+                totalQuestions: totalQ,
+                percent: Math.round(correctCount/totalQ*100),
+                lastQuestionIndex: totalQ-1,
+                answers: {},
+                perQuestion
+              });
+            }
+          }
+          cls.results.push(...attempts);
+        });
+      });
+    }
+
+    function createDefaultData(){
+      const classes = [
+        createClass('6A1', 'Lớp 6A1', 'Khởi động với chủ đề vật thể, chất và an toàn phòng thí nghiệm.'),
+        createClass('6A2', 'Lớp 6A2', 'Ôn tập trạng thái của chất, hỗn hợp và dung dịch.'),
+        createClass('6A3', 'Lớp 6A3', 'Làm quen với dụng cụ thí nghiệm và hiện tượng vật lí.'),
+        createClass('7A1', 'Lớp 7A1', 'Củng cố nguyên tử, phân tử và biến đổi của chất.'),
+        createClass('7A2', 'Lớp 7A2', 'Mở rộng nội dung hiện tượng hóa học, an toàn và thực hành.'),
+        createClass('8A1', 'Lớp 8A1', 'Khảo sát sâu hơn về chất, dung dịch và nhận biết hiện tượng.')
+      ];
+      seedSampleResults(classes);
+      return {
+        meta: {
+          title: 'ChemPlay Classroom - Học Hóa cùng cô Hằng',
+          createdAt: nowISO(),
+          version: 1
+        },
+        classes
+      };
+    }
+
+    function initData(){
+      let data = getStorage();
+      if(!data || !data.classes || !data.classes.length){
+        data = createDefaultData();
+        setStorage(data);
+      }
+      appState.data = data;
+      appState.selectedClassId = data.classes[0]?.id || null;
+    }
+
+    function saveData(){
+      setStorage(appState.data);
+      render();
+    }
+
+    /* =========================
+       TÍNH TOÁN THỐNG KÊ
+    ========================== */
+    function getClassById(classId){
+      return appState.data.classes.find(c => c.id === classId);
+    }
+
+    function getStudentSummary(cls, student){
+      const studentResults = cls.results.filter(r => r.studentId === student.id);
+      const completed = studentResults.filter(r => r.status === 'completed');
+      const inProgress = studentResults.find(r => r.status === 'in-progress');
+
+      let status = 'not-started';
+      if(completed.length) status = 'done';
+      else if(inProgress) status = 'in-progress';
+      else if(studentResults.length) status = 'pending';
+
+      const best = completed.sort((a,b)=>b.score-a.score || b.percent-a.percent)[0];
+      const last = studentResults.sort((a,b)=>new Date(b.finishedAt || b.startedAt) - new Date(a.finishedAt || a.startedAt))[0];
+
+      return {
+        studentId: student.id,
+        studentName: student.name,
+        status,
+        attemptCount: studentResults.length,
+        bestScore: best?.score ?? 0,
+        correctCount: best?.correctCount ?? 0,
+        totalQuestions: best?.totalQuestions ?? cls.questions.length,
+        percent: best?.percent ?? 0,
+        finishedAt: best?.finishedAt ?? '',
+        lastAt: last?.finishedAt || last?.startedAt || '',
+      };
+    }
+
+    function getClassReport(cls){
+      const studentSummaries = cls.students.map(st => getStudentSummary(cls, st));
+      const doneList = studentSummaries.filter(s => s.status === 'done');
+      const inProgressList = studentSummaries.filter(s => s.status === 'in-progress');
+      const notStartList = studentSummaries.filter(s => s.status === 'not-started');
+      const totalStudents = cls.students.length;
+      const avg = doneList.length ? Math.round(doneList.reduce((a,b)=>a+b.bestScore,0)/doneList.length*10)/10 : 0;
+      const top = [...doneList].sort((a,b)=>b.bestScore-a.bestScore || b.percent-a.percent);
+      const topStudent = top[0]?.studentName || '—';
+      const totalAttempts = cls.results.length;
+      const completionRate = totalStudents ? Math.round(doneList.length/totalStudents*100) : 0;
+      const ranked = studentSummaries.slice().sort((a,b)=>b.bestScore-a.bestScore || b.percent-a.percent || a.studentName.localeCompare(b.studentName,'vi'));
+
+      ranked.forEach((r,idx)=>r.rank = idx+1);
+
+      const perQuestion = cls.questions.map(q => {
+        const completedAttempts = cls.results.filter(r => r.status === 'completed');
+        const correctStudents = [];
+        const wrongStudents = [];
+        completedAttempts.forEach(res => {
+          const pq = (res.perQuestion || []).find(x => x.questionId === q.id);
+          if(pq?.correct) correctStudents.push(res.studentName);
+          else wrongStudents.push(res.studentName);
+        });
+        const total = correctStudents.length + wrongStudents.length;
+        return {
+          questionId: q.id,
+          title: q.title,
+          type: q.type,
+          correctCount: correctStudents.length,
+          wrongCount: wrongStudents.length,
+          rate: total ? Math.round(correctStudents.length/total*100) : 0,
+          correctStudents,
+          wrongStudents
+        };
+      });
+
+      return {
+        classId: cls.id,
+        className: cls.name,
+        classCode: cls.code,
+        totalStudents,
+        doneCount: doneList.length,
+        inProgressCount: inProgressList.length,
+        notStartCount: notStartList.length,
+        completionRate,
+        avgScore: avg,
+        topStudent,
+        totalAttempts,
+        ranked,
+        perQuestion,
+        topStudents: top.slice(0,5)
+      };
+    }
+
+    function getGlobalStats(){
+      const classes = appState.data.classes;
+      const reports = classes.map(getClassReport);
+      return {
+        totalClasses: classes.length,
+        totalStudents: classes.reduce((a,c)=>a+c.students.length,0),
+        totalQuestions: classes.reduce((a,c)=>a+c.questions.length,0),
+        totalAttempts: classes.reduce((a,c)=>a+c.results.length,0),
+        reports
+      };
+    }
+
+    /* =========================
+       ÂM THANH - WEB AUDIO API
+    ========================== */
+    function ensureAudioContext(){
+      if(!appState.audioCtx){
+        appState.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      return appState.audioCtx;
+    }
+
+    function playTone(freq=440, duration=0.15, type='sine', gainValue=0.04){
+      const ctx = ensureAudioContext();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = type;
+      osc.frequency.value = freq;
+      gain.gain.value = gainValue;
+      osc.connect(gain).connect(ctx.destination);
+      const t = ctx.currentTime;
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(gainValue, t + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + duration);
+      osc.start(t);
+      osc.stop(t + duration + 0.03);
+    }
+
+    function playCorrectSound(){
+      if(!appState.musicEnabled) return;
+      playTone(660, .12, 'triangle', .05);
+      setTimeout(()=>playTone(880, .14, 'triangle', .05), 90);
+    }
+
+    function playWrongSound(){
+      if(!appState.musicEnabled) return;
+      playTone(280, .16, 'sawtooth', .045);
+      setTimeout(()=>playTone(220, .20, 'sawtooth', .04), 90);
+    }
+
+    function playBackgroundPulse(){
+      if(!appState.musicEnabled) return;
+      const notes = [261.63, 329.63, 392.0, 523.25];
+      let i = 0;
+      clearInterval(appState.backgroundMusicTimer);
+      appState.backgroundMusicTimer = setInterval(() => {
+        if(!appState.musicEnabled) return;
+        playTone(notes[i % notes.length], 0.22, 'sine', 0.014);
+        i++;
+      }, 1800);
+    }
+
+    function toggleMusic(){
+      appState.musicEnabled = !appState.musicEnabled;
+      const btn = $('#musicBtn');
+      btn.textContent = appState.musicEnabled ? '🔊' : '🎵';
+      if(appState.musicEnabled){
+        ensureAudioContext().resume?.();
+        playBackgroundPulse();
+        toast('Đã bật nhạc nền nhẹ nhàng.');
+      }else{
+        clearInterval(appState.backgroundMusicTimer);
+        toast('Đã tắt nhạc nền.', 'warning');
+      }
+    }
+
+    /* =========================
+       XUẤT / NHẬP DỮ LIỆU
+    ========================== */
+    function exportStudentsCSV(cls){
+      const rows = [
+        ['Tên lớp','Mã lớp','Tên học sinh','Ghi chú'],
+        ...cls.students.map(st => [cls.name, cls.code, st.name, st.note || ''])
+      ];
+      const csv = rows.map(r => r.map(csvEscape).join(',')).join('\n');
+      downloadTextFile(`${cls.code}_danh_sach_hoc_sinh.csv`, '\ufeff' + csv, 'text/csv;charset=utf-8');
+      toast('Đã xuất danh sách học sinh CSV.');
+    }
+
+    function exportClassSummaryCSV(cls){
+      const report = getClassReport(cls);
+      const rows = [
+        ['Tên lớp','Mã lớp','Số HS','Đã làm','Chưa làm','Làm dở','Tỉ lệ hoàn thành','Điểm TB','Học sinh cao nhất','Tổng lượt làm'],
+        [report.className, report.classCode, report.totalStudents, report.doneCount, report.notStartCount, report.inProgressCount, report.completionRate + '%', report.avgScore, report.topStudent, report.totalAttempts]
+      ];
+      const csv = rows.map(r => r.map(csvEscape).join(',')).join('\n');
+      downloadTextFile(`${cls.code}_bao_cao_tong_hop.csv`, '\ufeff' + csv, 'text/csv;charset=utf-8');
+      toast('Đã xuất báo cáo tổng hợp CSV.');
+    }
+
+    function exportQuestionReportCSV(cls){
+      const report = getClassReport(cls);
+      const rows = [
+        ['Tiêu đề câu hỏi','Loại','Số HS đúng','Số HS sai','Tỉ lệ đúng','Danh sách đúng','Danh sách sai'],
+        ...report.perQuestion.map(q => [
+          q.title, q.type, q.correctCount, q.wrongCount, q.rate + '%', q.correctStudents.join('; '), q.wrongStudents.join('; ')
+        ])
+      ];
+      const csv = rows.map(r => r.map(csvEscape).join(',')).join('\n');
+      downloadTextFile(`${cls.code}_phan_tich_cau_hoi.csv`, '\ufeff' + csv, 'text/csv;charset=utf-8');
+      toast('Đã xuất báo cáo chi tiết câu hỏi CSV.');
+    }
+
+    function exportQuestionReportJSON(cls){
+      const report = getClassReport(cls);
+      downloadTextFile(`${cls.code}_phan_tich_cau_hoi.json`, JSON.stringify(report.perQuestion, null, 2), 'application/json;charset=utf-8');
+      toast('Đã xuất báo cáo chi tiết câu hỏi JSON.');
+    }
+
+    function downloadHTMLSource(){
+      downloadTextFile(DEFAULT_SOURCE_FILENAME, document.documentElement.outerHTML, 'text/html;charset=utf-8');
+      toast('Đã tải mã nguồn HTML.');
+    }
+
+    function getDeployGuideText(){
+      return `HƯỚNG DẪN ĐĂNG WEB CÔNG KHAI - ChemPlay Classroom
+
+1) GitHub Pages
+- Tạo repository mới trên GitHub
+- Upload file index.html này lên repository
+- Vào Settings > Pages
+- Chọn branch main và thư mục /root
+- Lưu lại và nhận đường link công khai
+
+2) Netlify
+- Vào netlify.com
+- Chọn Add new site > Deploy manually
+- Kéo thả file index.html hoặc thư mục chứa file
+- Netlify tự tạo link công khai
+
+3) Vercel
+- Vào vercel.com
+- Import project hoặc kéo thả thư mục chứa index.html
+- Deploy để nhận link công khai
+
+4) Cloudflare Pages
+- Vào dash.cloudflare.com
+- Tạo Pages project mới
+- Upload file index.html
+- Deploy để nhận link công khai
+
+Lưu ý:
+- File này chạy hoàn toàn frontend, không cần backend
+- Có thể mở trực tiếp trên trình duyệt hoặc đưa lên hosting tĩnh
+- Dữ liệu được lưu trong localStorage trên thiết bị đang dùng`;
+    }
+
+    function importStudentsFromCSV(classId, text){
+      const cls = getClassById(classId);
+      if(!cls) return;
+      const lines = text.replace(/\r/g,'').split('\n').filter(Boolean);
+      const newStudents = [];
+      lines.forEach((line, idx) => {
+        const parts = line.split(',').map(s => s.trim().replace(/^"|"$/g,''));
+        const name = parts[0];
+        if(!name || normalizeText(name) === 'ten hoc sinh' || normalizeText(name) === 'tên học sinh') return;
+        if(cls.students.some(st => normalizeText(st.name) === normalizeText(name))) return;
+        newStudents.push({
+          id: uid('st'),
+          name,
+          note: parts[1] || '',
+          createdAt: nowISO()
+        });
+      });
+      cls.students.push(...newStudents);
+      saveData();
+      toast(`Đã import ${newStudents.length} học sinh vào ${cls.code}.`);
+    }
+
+    /* =========================
+       RENDER CHUNG
+    ========================== */
+    function render(){
+      const app = $('#app');
+      app.innerHTML = `
+        ${renderHeader()}
+        <main class="container">
+          ${renderHero()}
+          ${renderTabs()}
+          ${appState.view === 'home' ? renderHome() : ''}
+          ${appState.view === 'teacher' ? renderTeacher() : ''}
+          ${appState.view === 'student' ? renderStudent() : ''}
+          ${renderFooter()}
+        </main>
+      `;
+      bindGlobalEvents();
+      drawCharts();
+    }
+
+    function renderHeader(){
+      return `
+        <header class="site-header">
+          <div class="container nav">
+            <div class="brand">
+              <div class="brand-logo">⚗️</div>
+              <div class="brand-text">
+                <h1>ChemPlay Classroom - Học Hóa cùng cô Hằng</h1>
+                <p>Web app trò chơi học tập online cho lớp 6–8</p>
+              </div>
+            </div>
+            <div class="nav-actions">
+              <button class="btn secondary small" data-nav="home">Trang chủ</button>
+              <button class="btn secondary small" data-nav="teacher">Khu vực giáo viên</button>
+              <button class="btn small" data-nav="student">Khu vực học sinh</button>
+            </div>
+          </div>
+        </header>
+      `;
+    }
+
+    function renderHero(){
+      const stats = getGlobalStats();
+      return `
+        <section class="hero">
+          <div class="hero-grid">
+            <div class="glass hero-card">
+              <div class="hero-badges">
+                <span class="badge">🎓 Giáo dục hiện đại</span>
+                <span class="badge">🧪 Theme Hóa học tươi sáng</span>
+                <span class="badge">📱 Responsive mọi thiết bị</span>
+              </div>
+              <h2 class="hero-title">Biến tiết học Hóa/KHTN thành trải nghiệm tương tác vui, rõ, dễ theo dõi.</h2>
+              <p class="hero-sub">
+                Tạo lớp, quản lí danh sách học sinh, giao bài với 4 dạng trò chơi, theo dõi tiến độ làm bài, phân tích kết quả theo lớp và theo từng câu hỏi. 
+                Học sinh chỉ cần nhập tên và mã lớp để bắt đầu.
+              </p>
+              <div class="hero-cta">
+                <button class="btn icon" data-nav="teacher">👩‍🏫 Vào dashboard giáo viên</button>
+                <button class="btn secondary icon" data-nav="student">🧑‍🎓 Bắt đầu làm bài</button>
+                <button class="btn ghost icon" id="restoreDataBtn">♻️ Khôi phục dữ liệu mẫu</button>
+              </div>
+            </div>
+            <div class="glass hero-side">
+              <div class="mini-grid">
+                <div class="mini-stat">
+                  <b>${stats.totalClasses}</b>
+                  <span>Lớp học mẫu sẵn sàng</span>
+                </div>
+                <div class="mini-stat">
+                  <b>${stats.totalStudents}</b>
+                  <span>Học sinh đang quản lí</span>
+                </div>
+                <div class="mini-stat">
+                  <b>${stats.totalQuestions}</b>
+                  <span>Câu hỏi trong ngân hàng</span>
+                </div>
+                <div class="mini-stat">
+                  <b>${stats.totalAttempts}</b>
+                  <span>Lượt làm được lưu</span>
+                </div>
+              </div>
+              <div class="chem-art">
+                <div class="atom"></div>
+                <div class="tube"></div>
+                <div class="flask"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderTabs(){
+      const tab = (view, label) => `<button class="tab ${appState.view===view?'active':''}" data-nav="${view}">${label}</button>`;
+      return `
+        <section class="section">
+          <div class="tabs">
+            ${tab('home','Tổng quan')}
+            ${tab('teacher','Dashboard giáo viên')}
+            ${tab('student','Giao diện học sinh')}
+          </div>
+        </section>
+      `;
+    }
+
+    function renderHome(){
+      const stats = getGlobalStats();
+      const firstReport = stats.reports[0];
+      return `
+        <section class="section">
+          <div class="grid-2">
+            <div class="card">
+              <h3>Điểm nổi bật</h3>
+              <div class="grid-2">
+                <div class="chart-box">
+                  <strong>✅ Theo dõi theo danh sách</strong>
+                  <p class="muted">Biết ngay học sinh nào đã làm, chưa làm, làm dở, đã hoàn thành.</p>
+                </div>
+                <div class="chart-box">
+                  <strong>🎮 4 dạng trò chơi</strong>
+                  <p class="muted">Trắc nghiệm, nối đáp án, điền từ vào câu, điền từ vào bảng.</p>
+                </div>
+                <div class="chart-box">
+                  <strong>📊 Báo cáo & biểu đồ</strong>
+                  <p class="muted">Tổng hợp theo lớp, học sinh, từng câu hỏi, top học sinh.</p>
+                </div>
+                <div class="chart-box">
+                  <strong>🌐 Đăng web công khai</strong>
+                  <p class="muted">Dễ đưa lên GitHub Pages, Netlify, Vercel hoặc Cloudflare Pages.</p>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <h3>Xem nhanh một lớp</h3>
+              <p class="muted">Ví dụ báo cáo lớp ${safeHtml(firstReport.classCode)}.</p>
+              <div class="stats-row">
+                <div class="stat">
+                  <div class="k">${firstReport.totalStudents}</div>
+                  <div class="t">Học sinh</div>
+                </div>
+                <div class="stat">
+                  <div class="k">${firstReport.doneCount}</div>
+                  <div class="t">Đã hoàn thành</div>
+                </div>
+                <div class="stat">
+                  <div class="k">${firstReport.avgScore}</div>
+                  <div class="t">Điểm trung bình</div>
+                </div>
+                <div class="stat">
+                  <div class="k">${firstReport.totalAttempts}</div>
+                  <div class="t">Lượt làm</div>
+                </div>
+              </div>
+              <div class="chart-box" style="margin-top:14px">
+                <canvas id="homeChart" width="560" height="240"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderTeacher(){
+      return `
+        <section class="section">
+          <div class="layout">
+            <aside class="glass sidebar">
+              <h3>Khu vực giáo viên</h3>
+              <p>Quản lí lớp, học sinh, câu hỏi, thống kê và triển khai web công khai.</p>
+              <div class="menu">
+                ${menuBtn('dashboard','📈 Dashboard')}
+                ${menuBtn('classes','🏫 Quản lí lớp')}
+                ${menuBtn('students','👥 Danh sách học sinh')}
+                ${menuBtn('questions','❓ Ngân hàng câu hỏi')}
+                ${menuBtn('reports','📊 Báo cáo kết quả')}
+                ${menuBtn('deploy','🚀 Triển khai công khai')}
+              </div>
+            </aside>
+            <div class="content">
+              ${appState.teacherMenu === 'dashboard' ? renderTeacherDashboard() : ''}
+              ${appState.teacherMenu === 'classes' ? renderTeacherClasses() : ''}
+              ${appState.teacherMenu === 'students' ? renderTeacherStudents() : ''}
+              ${appState.teacherMenu === 'questions' ? renderTeacherQuestions() : ''}
+              ${appState.teacherMenu === 'reports' ? renderTeacherReports() : ''}
+              ${appState.teacherMenu === 'deploy' ? renderTeacherDeploy() : ''}
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function menuBtn(key,label){
+      return `<button class="${appState.teacherMenu===key?'active':''}" data-teacher-menu="${key}">${label}</button>`;
+    }
+
+    function renderClassSelect(selected = appState.selectedClassId, includeAll = false, attr='data-select-class'){
+      const options = appState.data.classes.map(cls => `<option value="${cls.id}" ${selected===cls.id?'selected':''}>${safeHtml(cls.code)} - ${safeHtml(cls.name)}</option>`).join('');
+      return `
+        <select ${attr}>
+          ${includeAll ? `<option value="all">Tất cả lớp</option>` : ''}
+          ${options}
+        </select>
+      `;
+    }
+
+    function renderTeacherDashboard(){
+      const stats = getGlobalStats();
+      return `
+        <div class="card">
+          <div class="toolbar">
+            <div class="left">
+              <h2>Dashboard lớp học</h2>
+            </div>
+            <div class="right">
+              <button class="btn secondary small" id="downloadHtmlBtn">Tải mã nguồn HTML</button>
+              <button class="btn small" id="copyDeployGuideBtn">Sao chép hướng dẫn đăng web công khai</button>
+            </div>
+          </div>
+          <div class="stats-row">
+            <div class="stat">
+              <div class="k">${stats.totalClasses}</div>
+              <div class="t">Tổng số lớp</div>
+              <div class="delta">Sẵn sàng quản lí</div>
+            </div>
+            <div class="stat">
+              <div class="k">${stats.totalStudents}</div>
+              <div class="t">Tổng số học sinh</div>
+              <div class="delta">Theo danh sách lớp</div>
+            </div>
+            <div class="stat">
+              <div class="k">${stats.totalQuestions}</div>
+              <div class="t">Câu hỏi trò chơi</div>
+              <div class="delta">Đa dạng 4 dạng bài</div>
+            </div>
+            <div class="stat">
+              <div class="k">${stats.totalAttempts}</div>
+              <div class="t">Tổng lượt làm</div>
+              <div class="delta">Lưu tự động bằng localStorage</div>
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-top:16px">
+            <div class="chart-box">
+              <h4>Tỉ lệ đã làm / chưa làm</h4>
+              <canvas id="completionChart" width="520" height="260"></canvas>
+            </div>
+            <div class="chart-box">
+              <h4>Điểm trung bình theo lớp</h4>
+              <canvas id="avgChart" width="520" height="260"></canvas>
+            </div>
+            <div class="chart-box">
+              <h4>Tỉ lệ đúng theo dạng bài</h4>
+              <canvas id="typeChart" width="520" height="260"></canvas>
+            </div>
+            <div class="chart-box">
+              <h4>Top học sinh nổi bật</h4>
+              <canvas id="topChart" width="520" height="260"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Lớp học đang có</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Mã lớp</th>
+                  <th>Tên lớp</th>
+                  <th>Mô tả</th>
+                  <th>Học sinh</th>
+                  <th>Câu hỏi</th>
+                  <th>Lượt làm</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                ${appState.data.classes.map(cls => `
+                  <tr>
+                    <td><strong>${safeHtml(cls.code)}</strong></td>
+                    <td>${safeHtml(cls.name)}</td>
+                    <td>${safeHtml(cls.description)}</td>
+                    <td>${cls.students.length}</td>
+                    <td>${cls.questions.length}</td>
+                    <td>${cls.results.length}</td>
+                    <td><button class="btn secondary small" data-pick-class="${cls.id}">Chọn lớp</button></td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderTeacherClasses(){
+      return `
+        <div class="card">
+          <div class="toolbar">
+            <div class="left"><h2>Quản lí lớp học</h2></div>
+            <div class="right">
+              <button class="btn warning small" id="restoreDataBtn2">Khôi phục dữ liệu mẫu</button>
+            </div>
+          </div>
+
+          <form class="form-grid" id="classForm">
+            <div class="field span-3">
+              <label>Mã lớp</label>
+              <input required name="code" placeholder="Ví dụ: 6A4" />
+            </div>
+            <div class="field span-4">
+              <label>Tên lớp</label>
+              <input required name="name" placeholder="Ví dụ: Lớp 6A4" />
+            </div>
+            <div class="field span-5">
+              <label>Mô tả</label>
+              <input required name="description" placeholder="Mô tả ngắn về lớp / chủ đề đang học" />
+            </div>
+            <div class="span-12">
+              <button class="btn">+ Tạo lớp mới</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <h3>Danh sách lớp hiện có</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Mã lớp</th>
+                  <th>Tên lớp</th>
+                  <th>Mô tả</th>
+                  <th>Học sinh</th>
+                  <th>Câu hỏi</th>
+                  <th>Tạo lúc</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${appState.data.classes.map(cls => `
+                  <tr>
+                    <td><strong>${safeHtml(cls.code)}</strong></td>
+                    <td>${safeHtml(cls.name)}</td>
+                    <td>${safeHtml(cls.description)}</td>
+                    <td>${cls.students.length}</td>
+                    <td>${cls.questions.length}</td>
+                    <td>${formatDateTime(cls.createdAt)}</td>
+                    <td style="white-space:nowrap">
+                      <button class="btn secondary small" data-edit-class="${cls.id}">Sửa</button>
+                      <button class="btn secondary small" data-pick-class="${cls.id}">Chọn</button>
+                      <button class="btn danger small" data-delete-class="${cls.id}">Xóa</button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderTeacherStudents(){
+      const cls = getClassById(appState.selectedClassId) || appState.data.classes[0];
+      const report = getClassReport(cls);
+      const keyword = normalizeText(appState.currentSearch);
+      const filtered = report.ranked.filter(st => {
+        const searchOk = !keyword || normalizeText(st.studentName).includes(keyword);
+        const statusOk = appState.currentStatusFilter === 'all' || st.status === appState.currentStatusFilter;
+        return searchOk && statusOk;
+      });
+
+      return `
+        <div class="card">
+          <div class="toolbar">
+            <div class="left">
+              <h2>Danh sách học sinh theo lớp</h2>
+              ${renderClassSelect(cls.id)}
+            </div>
+            <div class="right">
+              <button class="btn secondary small" data-export-students="${cls.id}">Xuất CSV danh sách</button>
+            </div>
+          </div>
+
+          <form class="form-grid" id="studentForm">
+            <div class="field span-6">
+              <label>Tên học sinh</label>
+              <input required name="name" placeholder="Nhập họ tên học sinh" />
+            </div>
+            <div class="field span-6">
+              <label>Ghi chú</label>
+              <input name="note" placeholder="Ví dụ: nhóm 1, tổ 2..." />
+            </div>
+            <div class="span-12">
+              <button class="btn">+ Thêm học sinh</button>
+            </div>
+          </form>
+
+          <div class="toolbar" style="margin-top:18px">
+            <div class="left">
+              <div class="search">
+                🔎 <input id="studentSearch" placeholder="Tìm học sinh..." value="${safeHtml(appState.currentSearch)}" />
+              </div>
+              <select id="statusFilter">
+                <option value="all" ${appState.currentStatusFilter==='all'?'selected':''}>Tất cả trạng thái</option>
+                <option value="not-started" ${appState.currentStatusFilter==='not-started'?'selected':''}>Chưa làm</option>
+                <option value="in-progress" ${appState.currentStatusFilter==='in-progress'?'selected':''}>Làm dở</option>
+                <option value="done" ${appState.currentStatusFilter==='done'?'selected':''}>Đã hoàn thành</option>
+              </select>
+            </div>
+            <div class="right">
+              <label class="btn secondary small" style="display:inline-flex;align-items:center;gap:8px">
+                📥 Import CSV
+                <input type="file" id="csvImport" accept=".csv,text/csv" style="display:none" />
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Theo dõi học sinh theo danh sách - ${safeHtml(cls.code)}</h3>
+          <div class="stats-row" style="margin-bottom:14px">
+            <div class="stat">
+              <div class="k">${report.doneCount}</div>
+              <div class="t">Đã hoàn thành</div>
+            </div>
+            <div class="stat">
+              <div class="k">${report.inProgressCount}</div>
+              <div class="t">Làm dở</div>
+            </div>
+            <div class="stat">
+              <div class="k">${report.notStartCount}</div>
+              <div class="t">Chưa làm</div>
+            </div>
+            <div class="stat">
+              <div class="k">${report.completionRate}%</div>
+              <div class="t">Tỉ lệ hoàn thành</div>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Tên học sinh</th>
+                  <th>Trạng thái</th>
+                  <th>Số lượt làm</th>
+                  <th>Điểm cao nhất</th>
+                  <th>Số câu đúng</th>
+                  <th>Tổng số câu</th>
+                  <th>% đúng</th>
+                  <th>Hoàn thành</th>
+                  <th>Lần gần nhất</th>
+                  <th>Xếp hạng</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                ${filtered.map(st => `
+                  <tr>
+                    <td><strong>${safeHtml(st.studentName)}</strong></td>
+                    <td>${renderStatusPill(st.status)}</td>
+                    <td>${st.attemptCount}</td>
+                    <td>${st.bestScore}</td>
+                    <td>${st.correctCount}</td>
+                    <td>${st.totalQuestions}</td>
+                    <td>${st.percent}%</td>
+                    <td>${formatDateTime(st.finishedAt)}</td>
+                    <td>${formatDateTime(st.lastAt)}</td>
+                    <td>${st.rank}</td>
+                    <td style="white-space:nowrap">
+                      <button class="btn secondary small" data-edit-student="${cls.id}|${st.studentId}">Sửa</button>
+                      <button class="btn danger small" data-delete-student="${cls.id}|${st.studentId}">Xóa</button>
+                    </td>
+                  </tr>
+                `).join('') || `<tr><td colspan="11"><div class="empty">Không có học sinh phù hợp bộ lọc.</div></td></tr>`}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderStatusPill(status){
+      const map = {
+        'done': ['done','Đã hoàn thành'],
+        'not-started': ['not-started','Chưa làm'],
+        'in-progress': ['in-progress','Làm dở'],
+        'pending': ['pending','Đã lưu tạm']
+      };
+      const [cls,label] = map[status] || ['not-started','Chưa làm'];
+      return `<span class="pill ${cls}">${label}</span>`;
+    }
+
+    function renderTeacherQuestions(){
+      const cls = getClassById(appState.selectedClassId) || appState.data.classes[0];
+      const list = cls.questions.filter(q => appState.questionFilterType === 'all' || q.type === appState.questionFilterType);
+
+      return `
+        <div class="card">
+          <div class="toolbar">
+            <div class="left">
+              <h2>Ngân hàng câu hỏi</h2>
+              ${renderClassSelect(cls.id)}
+            </div>
+            <div class="right">
+              <select id="questionTypeFilter">
+                <option value="all" ${appState.questionFilterType==='all'?'selected':''}>Tất cả dạng</option>
+                <option value="mcq" ${appState.questionFilterType==='mcq'?'selected':''}>Trắc nghiệm</option>
+                <option value="matching" ${appState.questionFilterType==='matching'?'selected':''}>Nối đáp án</option>
+                <option value="fill" ${appState.questionFilterType==='fill'?'selected':''}>Điền từ vào câu</option>
+                <option value="table" ${appState.questionFilterType==='table'?'selected':''}>Điền từ vào bảng</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="small-note">Có thể thêm nhanh câu hỏi mẫu hoặc mở trình soạn chi tiết cho từng dạng bài.</div>
+
+          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:14px">
+            <button class="btn small" data-open-add-question="${cls.id}|mcq">+ Trắc nghiệm</button>
+            <button class="btn small" data-open-add-question="${cls.id}|matching">+ Nối đáp án</button>
+            <button class="btn small" data-open-add-question="${cls.id}|fill">+ Điền từ vào câu</button>
+            <button class="btn small" data-open-add-question="${cls.id}|table">+ Điền từ vào bảng</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Câu hỏi của lớp ${safeHtml(cls.code)}</h3>
+          <div class="accordion">
+            ${list.map((q,idx) => `
+              <div class="accordion-item">
+                <button class="accordion-head" data-accordion>
+                  <span>${idx+1}. ${safeHtml(q.title)} <span class="q-type" style="margin-left:8px">${getQuestionTypeLabel(q.type)}</span></span>
+                  <span>▾</span>
+                </button>
+                <div class="accordion-body">
+                  <p><strong>Mô tả:</strong> ${safeHtml(q.prompt)}</p>
+                  ${renderQuestionPreview(q)}
+                  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+                    <button class="btn secondary small" data-edit-question="${cls.id}|${q.id}">Sửa</button>
+                    <button class="btn danger small" data-delete-question="${cls.id}|${q.id}">Xóa</button>
+                  </div>
+                </div>
+              </div>
+            `).join('') || `<div class="empty">Chưa có câu hỏi nào trong lớp này.</div>`}
+          </div>
+        </div>
+      `;
+    }
+
+    function getQuestionTypeLabel(type){
+      return {
+        mcq:'Trắc nghiệm',
+        matching:'Nối đáp án',
+        fill:'Điền từ vào câu',
+        table:'Điền từ vào bảng'
+      }[type] || type;
+    }
+
+    function renderQuestionPreview(q){
+      if(q.type === 'mcq'){
+        return `<ul>${q.options.map((op,i)=>`<li>${safeHtml(op)} ${i===q.answer?'✅':''}</li>`).join('')}</ul>`;
+      }
+      if(q.type === 'matching'){
+        return `
+          <div class="grid-2">
+            <div><strong>Cột A</strong><ul>${q.leftItems.map(x=>`<li>${safeHtml(x)}</li>`).join('')}</ul></div>
+            <div><strong>Cột B</strong><ul>${q.rightItems.map(x=>`<li>${safeHtml(x)}</li>`).join('')}</ul></div>
+          </div>
+          <p><strong>Đáp án:</strong> ${q.answerPairs.map(p=>`${safeHtml(p[0])} → ${safeHtml(p[1])}`).join(' | ')}</p>
+        `;
+      }
+      if(q.type === 'fill'){
+        return `<p><strong>Đáp án chấp nhận:</strong> ${q.answers.map(safeHtml).join(', ')}</p>`;
+      }
+      if(q.type === 'table'){
+        return `
+          <div class="table-wrap">
+            <table>
+              <thead><tr>${q.table.headers.map(h=>`<th>${safeHtml(h)}</th>`).join('')}</tr></thead>
+              <tbody>
+                ${q.table.rows.map((r,idx)=>`
+                  <tr>
+                    <td>${safeHtml(r[0])}</td>
+                    <td>${safeHtml(q.tableAnswers[idx]?.[1] || q.tableAnswers[idx]?.[0] || '')}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+      return '';
+    }
+
+    function renderTeacherReports(){
+      const cls = getClassById(appState.selectedClassId) || appState.data.classes[0];
+      const report = getClassReport(cls);
+
+      return `
+        <div class="card">
+          <div class="toolbar">
+            <div class="left">
+              <h2>Báo cáo kết quả lớp</h2>
+              ${renderClassSelect(cls.id)}
+            </div>
+            <div class="right">
+              <button class="btn secondary small" data-export-summary="${cls.id}">Xuất tổng hợp CSV</button>
+              <button class="btn secondary small" data-export-question-csv="${cls.id}">Xuất câu hỏi CSV</button>
+              <button class="btn small" data-export-question-json="${cls.id}">Xuất câu hỏi JSON</button>
+            </div>
+          </div>
+
+          <div class="stats-row">
+            <div class="stat">
+              <div class="k">${report.totalStudents}</div>
+              <div class="t">Số HS trong danh sách</div>
+            </div>
+            <div class="stat">
+              <div class="k">${report.doneCount}</div>
+              <div class="t">Đã làm</div>
+            </div>
+            <div class="stat">
+              <div class="k">${report.completionRate}%</div>
+              <div class="t">Tỉ lệ hoàn thành</div>
+            </div>
+            <div class="stat">
+              <div class="k">${report.avgScore}</div>
+              <div class="t">Điểm trung bình lớp</div>
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-top:16px">
+            <div class="chart-box">
+              <h4>Báo cáo tổng hợp lớp</h4>
+              <p><strong>Tên lớp:</strong> ${safeHtml(report.className)}</p>
+              <p><strong>Mã lớp:</strong> ${safeHtml(report.classCode)}</p>
+              <p><strong>Học sinh điểm cao nhất:</strong> ${safeHtml(report.topStudent)}</p>
+              <p><strong>Tổng số lượt làm:</strong> ${report.totalAttempts}</p>
+              <div class="top-students">
+                ${report.topStudents.map((st,idx)=>`
+                  <div class="top-item">
+                    <div><strong>Top ${idx+1}:</strong> ${safeHtml(st.studentName)}</div>
+                    <div>${st.bestScore} điểm • ${st.percent}%</div>
+                  </div>
+                `).join('') || '<div class="empty">Chưa có học sinh hoàn thành.</div>'}
+              </div>
+            </div>
+            <div class="chart-box">
+              <h4>Biểu đồ lớp ${safeHtml(report.classCode)}</h4>
+              <canvas id="classReportChart" width="520" height="260"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Bảng chi tiết học sinh</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Tên học sinh</th>
+                  <th>Trạng thái</th>
+                  <th>Số lượt làm</th>
+                  <th>Điểm cao nhất</th>
+                  <th>Số câu đúng</th>
+                  <th>Tổng số câu</th>
+                  <th>% đúng</th>
+                  <th>Thời gian hoàn thành</th>
+                  <th>Lần gần nhất</th>
+                  <th>Xếp hạng</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${report.ranked.map(st => `
+                  <tr>
+                    <td><strong>${safeHtml(st.studentName)}</strong></td>
+                    <td>${renderStatusPill(st.status)}</td>
+                    <td>${st.attemptCount}</td>
+                    <td>${st.bestScore}</td>
+                    <td>${st.correctCount}</td>
+                    <td>${st.totalQuestions}</td>
+                    <td>${st.percent}%</td>
+                    <td>${formatDateTime(st.finishedAt)}</td>
+                    <td>${formatDateTime(st.lastAt)}</td>
+                    <td>${st.rank}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Phân tích theo từng câu</h3>
+          <div class="accordion">
+            ${report.perQuestion.map((q,idx)=>`
+              <div class="accordion-item">
+                <button class="accordion-head" data-accordion>
+                  <span>${idx+1}. ${safeHtml(q.title)} — ${getQuestionTypeLabel(q.type)}</span>
+                  <span>${q.rate}% đúng ▾</span>
+                </button>
+                <div class="accordion-body">
+                  <p><strong>Số học sinh đúng:</strong> ${q.correctCount}</p>
+                  <p><strong>Số học sinh sai:</strong> ${q.wrongCount}</p>
+                  <p><strong>Tỉ lệ đúng:</strong> ${q.rate}%</p>
+                  <p><strong>Danh sách học sinh đúng:</strong> ${q.correctStudents.length ? safeHtml(q.correctStudents.join(', ')) : '—'}</p>
+                  <p><strong>Danh sách học sinh sai:</strong> ${q.wrongStudents.length ? safeHtml(q.wrongStudents.join(', ')) : '—'}</p>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderTeacherDeploy(){
+      return `
+        <div class="card">
+          <h2>Triển khai web công khai</h2>
+          <p class="muted">
+            File này có thể mở trực tiếp trên trình duyệt hoặc tải lên hosting tĩnh để tạo đường link công khai cho giáo viên và học sinh truy cập từ máy tính, điện thoại, máy tính bảng mà không cần cài đặt.
+          </p>
+          <div class="grid-2">
+            <div class="chart-box">
+              <h4>Hướng dẫn ngắn</h4>
+              <ol style="line-height:1.8;padding-left:18px">
+                <li><strong>GitHub Pages:</strong> upload file <code>index.html</code> lên repository rồi bật Pages.</li>
+                <li><strong>Netlify:</strong> kéo thả file hoặc thư mục chứa file để deploy.</li>
+                <li><strong>Vercel:</strong> import project hoặc upload thư mục chứa file.</li>
+                <li><strong>Cloudflare Pages:</strong> tạo Pages project và upload file.</li>
+              </ol>
+              <div style="display:flex;gap:10px;flex-wrap:wrap">
+                <button class="btn secondary" id="downloadHtmlBtn2">Tải mã nguồn HTML</button>
+                <button class="btn" id="copyDeployGuideBtn2">Sao chép hướng dẫn đăng web công khai</button>
+              </div>
+            </div>
+            <div class="chart-box">
+              <h4>Nội dung hướng dẫn để sao chép</h4>
+              <div class="code-box">${safeHtml(getDeployGuideText())}</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderStudent(){
+      if(!appState.studentSession){
+        return renderStudentEntry();
+      }
+      if(appState.studentSession.screen === 'playing'){
+        return renderStudentGame();
+      }
+      if(appState.studentSession.screen === 'summary'){
+        return renderStudentSummary();
+      }
+      return renderStudentEntry();
+    }
+
+    function renderStudentEntry(){
+      return `
+        <section class="section">
+          <div class="grid-2">
+            <div class="card">
+              <h2>Khu vực học sinh</h2>
+              <p class="muted">Nhập tên học sinh và mã lớp để bắt đầu làm bài. Dữ liệu kết quả sẽ được lưu đúng vào lớp và đúng học sinh trong danh sách.</p>
+              <form id="studentStartForm" class="form-grid">
+                <div class="field span-6">
+                  <label>Tên học sinh</label>
+                  <input required name="studentName" placeholder="Ví dụ: Nguyễn Minh Anh" />
+                </div>
+                <div class="field span-6">
+                  <label>Mã lớp</label>
+                  <input required name="classCode" list="classCodeList" placeholder="Ví dụ: 6A1" />
+                  <datalist id="classCodeList">
+                    ${appState.data.classes.map(cls => `<option value="${safeHtml(cls.code)}">${safeHtml(cls.name)}</option>`).join('')}
+                  </datalist>
+                </div>
+                <div class="span-12">
+                  <button class="btn block">🚀 Bắt đầu làm bài</button>
+                </div>
+              </form>
+            </div>
+            <div class="card">
+              <h3>Học sinh sẽ được gì?</h3>
+              <div class="grid-2">
+                <div class="chart-box">
+                  <strong>🎯 Làm bài theo từng màn hình</strong>
+                  <p class="muted">Mỗi câu hỏi rõ ràng, dễ thao tác trên điện thoại và máy tính.</p>
+                </div>
+                <div class="chart-box">
+                  <strong>⚡ Phản hồi đúng/sai ngay</strong>
+                  <p class="muted">Có hiệu ứng nhẹ, âm thanh đúng/sai và lời khen thân thiện.</p>
+                </div>
+                <div class="chart-box">
+                  <strong>📈 Xem tiến trình</strong>
+                  <p class="muted">Thanh tiến trình và điểm số được cập nhật trong quá trình làm.</p>
+                </div>
+                <div class="chart-box">
+                  <strong>🏁 Tổng kết cuối</strong>
+                  <p class="muted">Hiển thị điểm, số câu đúng, phần trăm chính xác và có thể chơi lại.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderStudentGame(){
+      const session = appState.studentSession;
+      const cls = getClassById(session.classId);
+      const q = cls.questions[session.currentIndex];
+      const progress = Math.round((session.currentIndex / cls.questions.length) * 100);
+
+      return `
+        <section class="section">
+          <div class="card">
+            <div class="q-header">
+              <div>
+                <h2>${safeHtml(session.studentName)} • ${safeHtml(cls.code)}</h2>
+                <div class="muted">Câu ${session.currentIndex + 1}/${cls.questions.length} • ${getQuestionTypeLabel(q.type)}</div>
+              </div>
+              <div class="q-type">${safeHtml(q.title)}</div>
+            </div>
+            <div class="progress-wrap"><div class="progress-bar" style="width:${progress}%"></div></div>
+            <div class="question-shell" id="questionShell">
+              <div class="muted" style="margin-bottom:8px">Tiến trình: ${progress}%</div>
+              ${renderStudentQuestion(q, session)}
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderStudentQuestion(q, session){
+      if(q.type === 'mcq'){
+        const selected = session.answers[q.id];
+        return `
+          <h3>${safeHtml(q.prompt)}</h3>
+          <div class="options">
+            ${q.options.map((op,idx)=>`
+              <button class="option ${selected===idx?'active':''}" data-answer-mcq="${idx}">
+                ${String.fromCharCode(65+idx)}. ${safeHtml(op)}
+              </button>
+            `).join('')}
+          </div>
+          ${renderStudentGameActions('mcq')}
+        `;
+      }
+
+      if(q.type === 'matching'){
+        const match = session.answers[q.id] || {selectedLeft:null, selectedRight:null, pairs:[]};
+        return `
+          <h3>${safeHtml(q.prompt)}</h3>
+          <div class="match-grid">
+            <div class="match-col">
+              <strong>Cột A</strong>
+              ${q.leftItems.map(item => `
+                <button class="match-item ${match.selectedLeft===item?'active':''} ${match.pairs.some(p=>p[0]===item)?'matched':''}" data-match-left="${safeHtml(item)}">
+                  ${safeHtml(item)}
+                </button>
+              `).join('')}
+            </div>
+            <div class="match-col">
+              <strong>Cột B</strong>
+              ${q.rightItems.map(item => `
+                <button class="match-item ${match.selectedRight===item?'active':''} ${match.pairs.some(p=>p[1]===item)?'matched':''}" data-match-right="${safeHtml(item)}">
+                  ${safeHtml(item)}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+          <div class="pair-list">
+            ${(match.pairs || []).map(p => `<div class="pair-chip">🔗 ${safeHtml(p[0])} → ${safeHtml(p[1])}</div>`).join('') || '<div class="muted">Chưa có cặp nào được nối.</div>'}
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+            <button class="btn secondary" data-reset-match>Xóa các cặp đã nối</button>
+          </div>
+          ${renderStudentGameActions('matching')}
+        `;
+      }
+
+      if(q.type === 'fill'){
+        return `
+          <h3>${safeHtml(q.title)}</h3>
+          <p class="fill-blank">
+            ${safeHtml(q.prompt).replace('____', `<input class="inline-input" id="fillInput" value="${safeHtml(session.answers[q.id] || '')}" placeholder="Nhập đáp án" />`)}
+          </p>
+          ${renderStudentGameActions('fill')}
+        `;
+      }
+
+      if(q.type === 'table'){
+        const ans = session.answers[q.id] || Array.from({length:q.table.rows.length}, ()=> '');
+        return `
+          <h3>${safeHtml(q.prompt)}</h3>
+          <div class="table-blank-wrap">
+            <table class="table-blank">
+              <thead>
+                <tr>${q.table.headers.map(h => `<th>${safeHtml(h)}</th>`).join('')}</tr>
+              </thead>
+              <tbody>
+                ${q.table.rows.map((row,idx)=>`
+                  <tr>
+                    <td>${safeHtml(row[0])}</td>
+                    <td><input data-table-cell="${idx}" value="${safeHtml(ans[idx] || '')}" placeholder="Nhập nội dung..." /></td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+          ${renderStudentGameActions('table')}
+        `;
+      }
+      return '';
+    }
+
+    function renderStudentGameActions(type){
+      return `
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
+          <button class="btn" id="checkAnswerBtn">Kiểm tra</button>
+          <button class="btn secondary" id="saveProgressBtn">Lưu tạm</button>
+          <button class="btn ghost" id="goHomeBtn">Về trang chủ</button>
+        </div>
+        <div id="gameFeedback"></div>
+      `;
+    }
+
+    function renderStudentSummary(){
+      const s = appState.studentSession;
+      return `
+        <section class="section">
+          <div class="card glow">
+            <h2>🎉 Hoàn thành bài học!</h2>
+            <p class="muted">${pick(friendlyPraise)} Kết quả của em đã được lưu vào lớp.</p>
+            <div class="stats-row">
+              <div class="stat">
+                <div class="k">${s.finalScore}</div>
+                <div class="t">Điểm</div>
+              </div>
+              <div class="stat">
+                <div class="k">${s.correctCount}/${s.totalQuestions}</div>
+                <div class="t">Số câu đúng</div>
+              </div>
+              <div class="stat">
+                <div class="k">${s.percent}%</div>
+                <div class="t">Tỉ lệ chính xác</div>
+              </div>
+              <div class="stat">
+                <div class="k">${formatDateTime(s.finishedAt)}</div>
+                <div class="t">Thời điểm nộp</div>
+              </div>
+            </div>
+            <div class="grid-2" style="margin-top:16px">
+              <button class="btn" id="playAgainBtn">🔁 Chơi lại</button>
+              <button class="btn secondary" id="backHomeFromSummaryBtn">🏠 Quay về trang chủ</button>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderFooter(){
+      return `
+        <footer class="footer">
+          <div class="footer-card">
+            <strong>ChemPlay Classroom - Học Hóa cùng cô Hằng</strong>
+            <p style="margin:8px 0 0">
+              Web app học tập online 1 file HTML • Lưu bằng localStorage • Hỗ trợ tiếng Việt có dấu • Sẵn sàng dùng để dạy học và demo thực tế.
+            </p>
+          </div>
+        </footer>
+      `;
+    }
+
+    /* =========================
+       BIỂU ĐỒ CANVAS
+    ========================== */
+    function drawCharts(){
+      drawHomeChart();
+      drawDashboardCharts();
+      drawClassReportChart();
+    }
+
+    function getCanvas(id){ return document.getElementById(id) }
+    function clearCanvas(ctx, w, h){ ctx.clearRect(0,0,w,h) }
+
+    function roundedRect(ctx, x, y, w, h, r){
+      ctx.beginPath();
+      ctx.moveTo(x+r, y);
+      ctx.arcTo(x+w,y,x+w,y+h,r);
+      ctx.arcTo(x+w,y+h,x,y+h,r);
+      ctx.arcTo(x,y+h,x,y,r);
+      ctx.arcTo(x,y,x+w,y,r);
+      ctx.closePath();
+    }
+
+    function drawBarChart(canvas, labels, values, titleMode='value'){
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+      clearCanvas(ctx,w,h);
+      const pad = 40;
+      const max = Math.max(...values, 10);
+      const barW = Math.max(28, (w - pad*2) / (values.length*1.6));
+      values.forEach((val, i) => {
+        const x = pad + i * ((w-pad*2)/values.length) + 10;
+        const bh = (val/max) * (h - 90);
+        const y = h - 46 - bh;
+
+        ctx.fillStyle = '#edf5ff';
+        roundedRect(ctx, x, y, barW, bh, 12); ctx.fill();
+
+        const grad = ctx.createLinearGradient(0, y, 0, y+bh);
+        grad.addColorStop(0, '#4d8cff');
+        grad.addColorStop(1, '#2fb7c8');
+        ctx.fillStyle = grad;
+        roundedRect(ctx, x, y, barW, bh, 12); ctx.fill();
+
+        ctx.fillStyle = '#24415e';
+        ctx.font = '12px Segoe UI';
+        ctx.textAlign = 'center';
+        ctx.fillText(titleMode === 'percent' ? `${val}%` : String(val), x + barW/2, y - 8);
+
+        ctx.fillStyle = '#5b748e';
+        wrapCanvasText(ctx, labels[i], x + barW/2, h - 24, 70, 12);
+      });
+    }
+
+    function drawDonutChart(canvas, done, notDone){
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+      clearCanvas(ctx,w,h);
+
+      const cx = w/2, cy = h/2, r = 74;
+      const total = done + notDone || 1;
+      const a1 = (done/total) * Math.PI * 2;
+
+      ctx.lineWidth = 26;
+      ctx.strokeStyle = '#edf5ff';
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI*2);
+      ctx.stroke();
+
+      const grad = ctx.createLinearGradient(cx-r, cy-r, cx+r, cy+r);
+      grad.addColorStop(0,'#2fb7c8');
+      grad.addColorStop(1,'#4d8cff');
+      ctx.strokeStyle = grad;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, -Math.PI/2, -Math.PI/2 + a1);
+      ctx.stroke();
+
+      ctx.fillStyle = '#18324a';
+      ctx.font = '700 28px Segoe UI';
+      ctx.textAlign='center';
+      ctx.fillText(`${Math.round(done/total*100)}%`, cx, cy + 8);
+      ctx.font = '14px Segoe UI';
+      ctx.fillStyle = '#67809a';
+      ctx.fillText('đã hoàn thành', cx, cy + 30);
+
+      ctx.fillStyle = '#2fb7c8';
+      ctx.fillRect(24,h-36,14,14);
+      ctx.fillStyle = '#45617e';
+      ctx.fillText(`Đã làm: ${done}`, 96, h-24);
+
+      ctx.fillStyle = '#d8e8ff';
+      ctx.fillRect(w-170,h-36,14,14);
+      ctx.fillStyle = '#45617e';
+      ctx.fillText(`Chưa làm: ${notDone}`, w-92, h-24);
+    }
+
+    function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight){
+      const words = String(text).split(' ');
+      let line = '';
+      let lines = [];
+      words.forEach(word => {
+        const test = line + word + ' ';
+        if(ctx.measureText(test).width > maxWidth && line){
+          lines.push(line.trim());
+          line = word + ' ';
+        }else{
+          line = test;
+        }
+      });
+      if(line) lines.push(line.trim());
+      lines.slice(0,2).forEach((ln, i) => ctx.fillText(ln, x, y + i*lineHeight));
+    }
+
+    function drawHomeChart(){
+      const c = getCanvas('homeChart');
+      if(!c) return;
+      const report = getClassReport(appState.data.classes[0]);
+      drawDonutChart(c, report.doneCount, report.notStartCount + report.inProgressCount);
+    }
+
+    function drawDashboardCharts(){
+      const stats = getGlobalStats();
+      const reports = stats.reports;
+
+      const completionCanvas = getCanvas('completionChart');
+      if(completionCanvas){
+        const done = reports.reduce((a,r)=>a+r.doneCount,0);
+        const notDone = reports.reduce((a,r)=>a+r.notStartCount+r.inProgressCount,0);
+        drawDonutChart(completionCanvas, done, notDone);
+      }
+
+      const avgCanvas = getCanvas('avgChart');
+      if(avgCanvas){
+        drawBarChart(avgCanvas, reports.map(r=>r.classCode), reports.map(r=>r.avgScore));
+      }
+
+      const typeCanvas = getCanvas('typeChart');
+      if(typeCanvas){
+        const typeStats = {mcq:{correct:0,total:0}, matching:{correct:0,total:0}, fill:{correct:0,total:0}, table:{correct:0,total:0}};
+        appState.data.classes.forEach(cls=>{
+          cls.results.filter(r=>r.status==='completed').forEach(res=>{
+            (res.perQuestion || []).forEach(pq=>{
+              const bucket = typeStats[pq.type] || typeStats.mcq;
+              bucket.total++;
+              if(pq.correct) bucket.correct++;
+            });
+          });
+        });
+        const labels = ['Trắc nghiệm','Nối đáp án','Điền từ','Điền bảng'];
+        const values = ['mcq','matching','fill','table'].map(k => typeStats[k].total ? Math.round(typeStats[k].correct/typeStats[k].total*100) : 0);
+        drawBarChart(typeCanvas, labels, values, 'percent');
+      }
+
+      const topCanvas = getCanvas('topChart');
+      if(topCanvas){
+        const bestList = [];
+        appState.data.classes.forEach(cls=>{
+          const report = getClassReport(cls);
+          report.ranked.forEach(st => {
+            if(st.bestScore > 0) bestList.push({name: st.studentName, score: st.bestScore});
+          });
+        });
+        bestList.sort((a,b)=>b.score-a.score);
+        const top5 = bestList.slice(0,5);
+        drawBarChart(topCanvas, top5.map(x=>x.name), top5.map(x=>x.score));
+      }
+    }
+
+    function drawClassReportChart(){
+      const canvas = getCanvas('classReportChart');
+      if(!canvas) return;
+      const cls = getClassById(appState.selectedClassId) || appState.data.classes[0];
+      const report = getClassReport(cls);
+      drawBarChart(canvas, ['Đã làm','Làm dở','Chưa làm','Điểm TB'], [report.doneCount, report.inProgressCount, report.notStartCount, report.avgScore]);
+    }
+
+    /* =========================
+       TƯƠNG TÁC GIÁO VIÊN
+    ========================== */
+    function bindGlobalEvents(){
+      $$('[data-nav]').forEach(btn => {
+        btn.onclick = () => {
+          appState.view = btn.dataset.nav;
+          render();
+        };
+      });
+
+      $$('#restoreDataBtn, #restoreDataBtn2').forEach(btn => {
+        if(btn){
+          btn.onclick = () => {
+            confirmAction('Khôi phục dữ liệu mẫu', 'Dữ liệu hiện tại sẽ bị thay thế bằng bộ dữ liệu mẫu mặc định. Bạn có chắc chắn không?', () => {
+              appState.data = createDefaultData();
+              appState.selectedClassId = appState.data.classes[0]?.id || null;
+              setStorage(appState.data);
+              toast('Đã khôi phục dữ liệu mẫu.');
+              render();
+            });
+          };
+        }
+      });
+
+      $$('#downloadHtmlBtn, #downloadHtmlBtn2').forEach(btn => btn && (btn.onclick = downloadHTMLSource));
+      $$('#copyDeployGuideBtn, #copyDeployGuideBtn2').forEach(btn => btn && (btn.onclick = () => copyText(getDeployGuideText())));
+
+      $('#musicBtn')?.addEventListener('click', toggleMusic);
+
+      bindTeacherMenu();
+      bindTeacherActions();
+      bindStudentActions();
+      bindAccordion();
+    }
+
+    function bindTeacherMenu(){
+      $$('[data-teacher-menu]').forEach(btn => {
+        btn.onclick = () => {
+          appState.teacherMenu = btn.dataset.teacherMenu;
+          render();
+        };
+      });
+    }
+
+    function bindTeacherActions(){
+      $$('[data-pick-class]').forEach(btn => {
+        btn.onclick = () => {
+          appState.selectedClassId = btn.dataset.pickClass;
+          toast('Đã chọn lớp.');
+          if(appState.teacherMenu !== 'students' && appState.teacherMenu !== 'questions' && appState.teacherMenu !== 'reports'){
+            appState.teacherMenu = 'reports';
+          }
+          render();
+        };
+      });
+
+      $$('[data-select-class]').forEach(sel => {
+        sel.onchange = () => {
+          appState.selectedClassId = sel.value;
+          render();
+        };
+      });
+
+      const classForm = $('#classForm');
+      if(classForm){
+        classForm.onsubmit = e => {
+          e.preventDefault();
+          const fd = new FormData(classForm);
+          const code = String(fd.get('code')).trim();
+          const name = String(fd.get('name')).trim();
+          const description = String(fd.get('description')).trim();
+          if(appState.data.classes.some(c => normalizeText(c.code) === normalizeText(code))){
+            toast('Mã lớp đã tồn tại.', 'error');
+            return;
+          }
+          const newClass = {
+            id: uid('cl'),
+            code,
+            name,
+            description,
+            students: [],
+            questions: makeSampleQuestions(code[0] || '6'),
+            results: [],
+            createdAt: nowISO()
+          };
+          appState.data.classes.push(newClass);
+          appState.selectedClassId = newClass.id;
+          saveData();
+          toast('Đã tạo lớp mới.');
+        };
+      }
+
+      $$('[data-delete-class]').forEach(btn => {
+        btn.onclick = () => {
+          const cls = getClassById(btn.dataset.deleteClass);
+          confirmAction('Xóa lớp', `Bạn sắp xóa lớp ${safeHtml(cls.code)}. Toàn bộ danh sách học sinh, câu hỏi và kết quả của lớp này sẽ bị xóa.`, () => {
+            appState.data.classes = appState.data.classes.filter(c => c.id !== cls.id);
+            appState.selectedClassId = appState.data.classes[0]?.id || null;
+            saveData();
+            toast('Đã xóa lớp.', 'warning');
+          });
+        };
+      });
+
+      $$('[data-edit-class]').forEach(btn => {
+        btn.onclick = () => {
+          const cls = getClassById(btn.dataset.editClass);
+          openModal('Sửa thông tin lớp', `
+            <form id="editClassForm" class="form-grid">
+              <div class="field span-4"><label>Mã lớp</label><input name="code" value="${safeHtml(cls.code)}" required /></div>
+              <div class="field span-4"><label>Tên lớp</label><input name="name" value="${safeHtml(cls.name)}" required /></div>
+              <div class="field span-4"><label>Mô tả</label><input name="description" value="${safeHtml(cls.description)}" required /></div>
+              <div class="span-12" style="display:flex;justify-content:flex-end;gap:10px">
+                <button type="button" class="btn secondary" onclick="closeModal()">Hủy</button>
+                <button class="btn">Lưu thay đổi</button>
+              </div>
+            </form>
+          `);
+          setTimeout(()=>{
+            $('#editClassForm').onsubmit = e => {
+              e.preventDefault();
+              const fd = new FormData(e.target);
+              cls.code = String(fd.get('code')).trim();
+              cls.name = String(fd.get('name')).trim();
+              cls.description = String(fd.get('description')).trim();
+              closeModal();
+              saveData();
+              toast('Đã cập nhật lớp.');
+            };
+          },0);
+        };
+      });
+
+      const studentForm = $('#studentForm');
+      if(studentForm){
+        studentForm.onsubmit = e => {
+          e.preventDefault();
+          const cls = getClassById(appState.selectedClassId);
+          const fd = new FormData(studentForm);
+          const name = String(fd.get('name')).trim();
+          const note = String(fd.get('note')).trim();
+          if(!name) return;
+          if(cls.students.some(st => normalizeText(st.name) === normalizeText(name))){
+            toast('Học sinh này đã có trong lớp.', 'warning');
+            return;
+          }
+          cls.students.push({id: uid('st'), name, note, createdAt: nowISO()});
+          saveData();
+          toast('Đã thêm học sinh.');
+        };
+      }
+
+      const studentSearch = $('#studentSearch');
+      if(studentSearch){
+        studentSearch.oninput = () => {
+          appState.currentSearch = studentSearch.value;
+          render();
+        };
+      }
+      const statusFilter = $('#statusFilter');
+      if(statusFilter){
+        statusFilter.onchange = () => {
+          appState.currentStatusFilter = statusFilter.value;
+          render();
+        };
+      }
+
+      $$('[data-edit-student]').forEach(btn => {
+        btn.onclick = () => {
+          const [classId, studentId] = btn.dataset.editStudent.split('|');
+          const cls = getClassById(classId);
+          const st = cls.students.find(x => x.id === studentId);
+          openModal('Sửa học sinh', `
+            <form id="editStudentForm" class="form-grid">
+              <div class="field span-6"><label>Tên học sinh</label><input name="name" value="${safeHtml(st.name)}" required /></div>
+              <div class="field span-6"><label>Ghi chú</label><input name="note" value="${safeHtml(st.note || '')}" /></div>
+              <div class="span-12" style="display:flex;justify-content:flex-end;gap:10px">
+                <button type="button" class="btn secondary" onclick="closeModal()">Hủy</button>
+                <button class="btn">Lưu</button>
+              </div>
+            </form>
+          `);
+          setTimeout(()=>{
+            $('#editStudentForm').onsubmit = e => {
+              e.preventDefault();
+              const fd = new FormData(e.target);
+              st.name = String(fd.get('name')).trim();
+              st.note = String(fd.get('note')).trim();
+              closeModal();
+              saveData();
+              toast('Đã cập nhật học sinh.');
+            };
+          },0);
+        };
+      });
+
+      $$('[data-delete-student]').forEach(btn => {
+        btn.onclick = () => {
+          const [classId, studentId] = btn.dataset.deleteStudent.split('|');
+          const cls = getClassById(classId);
+          const st = cls.students.find(x => x.id === studentId);
+          confirmAction('Xóa học sinh', `Bạn sắp xóa học sinh ${safeHtml(st.name)} khỏi lớp ${safeHtml(cls.code)}.`, () => {
+            cls.students = cls.students.filter(x => x.id !== studentId);
+            cls.results = cls.results.filter(r => r.studentId !== studentId);
+            saveData();
+            toast('Đã xóa học sinh.', 'warning');
+          });
+        };
+      });
+
+      const csvImport = $('#csvImport');
+      if(csvImport){
+        csvImport.onchange = async (e) => {
+          const file = e.target.files[0];
+          if(!file) return;
+          const text = await file.text();
+          importStudentsFromCSV(appState.selectedClassId, text);
+        };
+      }
+
+      $('#questionTypeFilter')?.addEventListener('change', e => {
+        appState.questionFilterType = e.target.value;
+        render();
+      });
+
+      $$('[data-open-add-question]').forEach(btn => {
+        btn.onclick = () => {
+          const [classId, type] = btn.dataset.openAddQuestion.split('|');
+          openQuestionEditor(classId, type, null);
+        };
+      });
+
+      $$('[data-edit-question]').forEach(btn => {
+        btn.onclick = () => {
+          const [classId, qId] = btn.dataset.editQuestion.split('|');
+          const cls = getClassById(classId);
+          const q = cls.questions.find(x => x.id === qId);
+          openQuestionEditor(classId, q.type, q);
+        };
+      });
+
+      $$('[data-delete-question]').forEach(btn => {
+        btn.onclick = () => {
+          const [classId, qId] = btn.dataset.deleteQuestion.split('|');
+          const cls = getClassById(classId);
+          const q = cls.questions.find(x => x.id === qId);
+          confirmAction('Xóa câu hỏi', `Bạn sắp xóa câu hỏi "${safeHtml(q.title)}".`, () => {
+            cls.questions = cls.questions.filter(x => x.id !== qId);
+            saveData();
+            toast('Đã xóa câu hỏi.', 'warning');
+          });
+        };
+      });
+
+      $$('[data-export-students]').forEach(btn => btn.onclick = () => exportStudentsCSV(getClassById(btn.dataset.exportStudents)));
+      $$('[data-export-summary]').forEach(btn => btn.onclick = () => exportClassSummaryCSV(getClassById(btn.dataset.exportSummary)));
+      $$('[data-export-question-csv]').forEach(btn => btn.onclick = () => exportQuestionReportCSV(getClassById(btn.dataset.exportQuestionCsv)));
+      $$('[data-export-question-json]').forEach(btn => btn.onclick = () => exportQuestionReportJSON(getClassById(btn.dataset.exportQuestionJson)));
+    }
+
+    function bindAccordion(){
+      $$('[data-accordion]').forEach(btn => {
+        btn.onclick = () => btn.closest('.accordion-item').classList.toggle('open');
+      });
+    }
+
+    function openQuestionEditor(classId, type, question=null){
+      const isEdit = !!question;
+      const title = isEdit ? 'Sửa câu hỏi' : `Thêm câu hỏi ${getQuestionTypeLabel(type)}`;
+      const q = question || getEmptyQuestion(type);
+
+      openModal(title, `
+        <form id="questionEditorForm" class="form-grid">
+          <input type="hidden" name="type" value="${safeHtml(type)}" />
+          <div class="field span-12">
+            <label>Tiêu đề câu hỏi</label>
+            <input name="title" value="${safeHtml(q.title || '')}" required />
+          </div>
+          <div class="field span-12">
+            <label>Nội dung / yêu cầu</label>
+            <textarea name="prompt" required>${safeHtml(q.prompt || '')}</textarea>
+          </div>
+
+          ${type === 'mcq' ? `
+            <div class="field span-6"><label>Đáp án A</label><input name="opt0" value="${safeHtml(q.options?.[0] || '')}" required /></div>
+            <div class="field span-6"><label>Đáp án B</label><input name="opt1" value="${safeHtml(q.options?.[1] || '')}" required /></div>
+            <div class="field span-6"><label>Đáp án C</label><input name="opt2" value="${safeHtml(q.options?.[2] || '')}" required /></div>
+            <div class="field span-6"><label>Đáp án D</label><input name="opt3" value="${safeHtml(q.options?.[3] || '')}" required /></div>
+            <div class="field span-4"><label>Chỉ số đáp án đúng</label><select name="answer"><option value="0" ${q.answer===0?'selected':''}>A</option><option value="1" ${q.answer===1?'selected':''}>B</option><option value="2" ${q.answer===2?'selected':''}>C</option><option value="3" ${q.answer===3?'selected':''}>D</option></select></div>
+          ` : ''}
+
+          ${type === 'matching' ? `
+            <div class="field span-6"><label>Cột A (mỗi dòng 1 mục)</label><textarea name="leftItems">${safeHtml((q.leftItems || []).join('\n'))}</textarea></div>
+            <div class="field span-6"><label>Cột B (mỗi dòng 1 mục)</label><textarea name="rightItems">${safeHtml((q.rightItems || []).join('\n'))}</textarea></div>
+            <div class="field span-12"><label>Đáp án ghép cặp (mỗi dòng theo dạng A | B)</label><textarea name="pairs">${safeHtml((q.answerPairs || []).map(p=>`${p[0]} | ${p[1]}`).join('\n'))}</textarea></div>
+          ` : ''}
+
+          ${type === 'fill' ? `
+            <div class="field span-12"><label>Đáp án chấp nhận (ngăn cách bằng dấu phẩy)</label><textarea name="answers">${safeHtml((q.answers || []).join(', '))}</textarea></div>
+          ` : ''}
+
+          ${type === 'table' ? `
+            <div class="field span-6"><label>Tên hàng trong cột 1 (mỗi dòng 1 mục)</label><textarea name="rows">${safeHtml((q.table?.rows || []).map(r=>r[0]).join('\n'))}</textarea></div>
+            <div class="field span-6"><label>Đáp án cột 2 (mỗi dòng 1 mục)</label><textarea name="tableAnswers">${safeHtml((q.tableAnswers || []).map(r=>r[1] || r[0]).join('\n'))}</textarea></div>
+          ` : ''}
+
+          <div class="field span-12">
+            <label>Giải thích</label>
+            <textarea name="explanation">${safeHtml(q.explanation || '')}</textarea>
+          </div>
+
+          <div class="span-12" style="display:flex;justify-content:flex-end;gap:10px">
+            <button type="button" class="btn secondary" onclick="closeModal()">Hủy</button>
+            <button class="btn">${isEdit ? 'Lưu thay đổi' : 'Tạo câu hỏi'}</button>
+          </div>
+        </form>
+      `);
+
+      setTimeout(()=>{
+        $('#questionEditorForm').onsubmit = e => {
+          e.preventDefault();
+          const fd = new FormData(e.target);
+          const cls = getClassById(classId);
+          const newQ = {
+            id: q.id || uid('q'),
+            type,
+            title: String(fd.get('title')).trim(),
+            prompt: String(fd.get('prompt')).trim(),
+            explanation: String(fd.get('explanation')).trim()
+          };
+
+          if(type === 'mcq'){
+            newQ.options = [fd.get('opt0'), fd.get('opt1'), fd.get('opt2'), fd.get('opt3')].map(x=>String(x).trim());
+            newQ.answer = Number(fd.get('answer'));
+          }
+
+          if(type === 'matching'){
+            newQ.leftItems = String(fd.get('leftItems')).split('\n').map(s=>s.trim()).filter(Boolean);
+            newQ.rightItems = String(fd.get('rightItems')).split('\n').map(s=>s.trim()).filter(Boolean);
+            newQ.answerPairs = String(fd.get('pairs')).split('\n')
+              .map(s=>s.trim()).filter(Boolean)
+              .map(line => line.split('|').map(x=>x.trim()))
+              .filter(p => p.length >= 2);
+          }
+
+          if(type === 'fill'){
+            newQ.answers = String(fd.get('answers')).split(',').map(s=>s.trim()).filter(Boolean);
+          }
+
+          if(type === 'table'){
+            const rows = String(fd.get('rows')).split('\n').map(s=>s.trim()).filter(Boolean);
+            const answers = String(fd.get('tableAnswers')).split('\n').map(s=>s.trim()).filter(Boolean);
+            newQ.table = {
+              headers: ['Mục', 'Nội dung'],
+              rows: rows.map(r => [r, ''])
+            };
+            newQ.tableAnswers = answers.map(a => [normalizeText(a), a]);
+          }
+
+          if(isEdit){
+            const idx = cls.questions.findIndex(x => x.id === q.id);
+            cls.questions[idx] = newQ;
+            toast('Đã cập nhật câu hỏi.');
+          }else{
+            cls.questions.push(newQ);
+            toast('Đã thêm câu hỏi mới.');
+          }
+
+          closeModal();
+          saveData();
+        };
+      },0);
+    }
+
+    function getEmptyQuestion(type){
+      if(type === 'mcq'){
+        return {title:'',prompt:'',options:['','','',''],answer:0,explanation:''};
+      }
+      if(type === 'matching'){
+        return {title:'',prompt:'',leftItems:[''],rightItems:[''],answerPairs:[['','']],explanation:''};
+      }
+      if(type === 'fill'){
+        return {title:'',prompt:'',answers:[''],explanation:''};
+      }
+      if(type === 'table'){
+        return {
+          title:'',prompt:'',
+          table:{headers:['Mục','Nội dung'],rows:[['','']]},
+          tableAnswers:[['','']],
+          explanation:''
+        };
+      }
+      return {};
+    }
+
+    /* =========================
+       TƯƠNG TÁC HỌC SINH
+    ========================== */
+    function bindStudentActions(){
+      const startForm = $('#studentStartForm');
+      if(startForm){
+        startForm.onsubmit = e => {
+          e.preventDefault();
+          const fd = new FormData(startForm);
+          const studentName = String(fd.get('studentName')).trim();
+          const classCode = String(fd.get('classCode')).trim();
+          const cls = appState.data.classes.find(c => normalizeText(c.code) === normalizeText(classCode));
+          if(!cls){
+            toast('Không tìm thấy mã lớp.', 'error');
+            return;
+          }
+
+          let student = cls.students.find(st => normalizeText(st.name) === normalizeText(studentName));
+          if(!student){
+            // Cho phép nhập đúng/sửa tên, nhưng vẫn cần lưu đúng vào lớp và học sinh;
+            // nếu chưa có trong danh sách, thêm mới để theo dõi.
+            student = {id: uid('st'), name: studentName, note:'Tự thêm khi học sinh vào làm bài', createdAt: nowISO()};
+            cls.students.push(student);
+          }
+
+          const oldProgress = cls.results.find(r => r.studentId === student.id && r.status === 'in-progress');
+          appState.studentSession = {
+            screen: 'playing',
+            classId: cls.id,
+            classCode: cls.code,
+            studentId: student.id,
+            studentName: student.name,
+            startedAt: oldProgress?.startedAt || nowISO(),
+            currentIndex: oldProgress?.lastQuestionIndex ?? 0,
+            answers: oldProgress?.answers || {},
+            tempFeedback: null
+          };
+          saveInProgressResult();
+          appState.view = 'student';
+          toast(`Chào ${student.name}! ${pick(friendlyPraise)}`);
+          render();
+        };
+      }
+
+      const checkBtn = $('#checkAnswerBtn');
+      if(checkBtn){
+        checkBtn.onclick = handleCheckAnswer;
+      }
+
+      const saveProgressBtn = $('#saveProgressBtn');
+      if(saveProgressBtn){
+        saveProgressBtn.onclick = () => {
+          saveInProgressResult();
+          toast('Đã lưu tạm tiến trình.');
+        };
+      }
+
+      const goHomeBtn = $('#goHomeBtn');
+      if(goHomeBtn){
+        goHomeBtn.onclick = () => {
+          saveInProgressResult();
+          appState.studentSession = null;
+          appState.view = 'home';
+          render();
+        };
+      }
+
+      const playAgainBtn = $('#playAgainBtn');
+      if(playAgainBtn){
+        playAgainBtn.onclick = () => {
+          const s = appState.studentSession;
+          appState.studentSession = {
+            screen: 'playing',
+            classId: s.classId,
+            classCode: s.classCode,
+            studentId: s.studentId,
+            studentName: s.studentName,
+            startedAt: nowISO(),
+            currentIndex: 0,
+            answers: {}
+          };
+          saveInProgressResult();
+          render();
+        };
+      }
+
+      const backHomeFromSummaryBtn = $('#backHomeFromSummaryBtn');
+      if(backHomeFromSummaryBtn){
+        backHomeFromSummaryBtn.onclick = () => {
+          appState.studentSession = null;
+          appState.view = 'home';
+          render();
+        };
+      }
+
+      $$('[data-answer-mcq]').forEach(btn => {
+        btn.onclick = () => {
+          const q = getCurrentQuestion();
+          appState.studentSession.answers[q.id] = Number(btn.dataset.answerMcq);
+          render();
+        };
+      });
+
+      $$('[data-match-left]').forEach(btn => {
+        btn.onclick = () => {
+          const q = getCurrentQuestion();
+          const obj = appState.studentSession.answers[q.id] || {selectedLeft:null, selectedRight:null, pairs:[]};
+          const val = btn.dataset.matchLeft;
+          if(obj.pairs.some(p=>p[0]===val)) return;
+          obj.selectedLeft = val;
+          if(obj.selectedLeft && obj.selectedRight){
+            if(!obj.pairs.some(p=>p[0]===obj.selectedLeft || p[1]===obj.selectedRight)){
+              obj.pairs.push([obj.selectedLeft, obj.selectedRight]);
+            }
+            obj.selectedLeft = null;
+            obj.selectedRight = null;
+          }
+          appState.studentSession.answers[q.id] = obj;
+          render();
+        };
+      });
+
+      $$('[data-match-right]').forEach(btn => {
+        btn.onclick = () => {
+          const q = getCurrentQuestion();
+          const obj = appState.studentSession.answers[q.id] || {selectedLeft:null, selectedRight:null, pairs:[]};
+          const val = btn.dataset.matchRight;
+          if(obj.pairs.some(p=>p[1]===val)) return;
+          obj.selectedRight = val;
+          if(obj.selectedLeft && obj.selectedRight){
+            if(!obj.pairs.some(p=>p[0]===obj.selectedLeft || p[1]===obj.selectedRight)){
+              obj.pairs.push([obj.selectedLeft, obj.selectedRight]);
+            }
+            obj.selectedLeft = null;
+            obj.selectedRight = null;
+          }
+          appState.studentSession.answers[q.id] = obj;
+          render();
+        };
+      });
+
+      $('[data-reset-match]')?.addEventListener('click', () => {
+        const q = getCurrentQuestion();
+        appState.studentSession.answers[q.id] = {selectedLeft:null, selectedRight:null, pairs:[]};
+        render();
+      });
+
+      $('#fillInput')?.addEventListener('input', e => {
+        const q = getCurrentQuestion();
+        appState.studentSession.answers[q.id] = e.target.value;
+      });
+
+      $$('[data-table-cell]').forEach(input => {
+        input.oninput = () => {
+          const q = getCurrentQuestion();
+          const arr = appState.studentSession.answers[q.id] || Array.from({length:q.table.rows.length}, ()=> '');
+          arr[Number(input.dataset.tableCell)] = input.value;
+          appState.studentSession.answers[q.id] = arr;
+        };
+      });
+    }
+
+    function getCurrentQuestion(){
+      const cls = getClassById(appState.studentSession.classId);
+      return cls.questions[appState.studentSession.currentIndex];
+    }
+
+    function handleCheckAnswer(){
+      const shell = $('#questionShell');
+      const feedbackBox = $('#gameFeedback');
+      const session = appState.studentSession;
+      const cls = getClassById(session.classId);
+      const q = cls.questions[session.currentIndex];
+      const result = evaluateQuestion(q, session.answers[q.id]);
+
+      if(result.correct){
+        playCorrectSound();
+        shell.classList.remove('shake');
+        shell.classList.add('glow');
+        const msg = `${pick(friendlyPraise)} ${q.explanation || ''}`.trim();
+        feedbackBox.innerHTML = `<div class="feedback success">✅ ${safeHtml(msg)}</div>`;
+      }else{
+        playWrongSound();
+        shell.classList.remove('glow');
+        shell.classList.add('shake');
+        feedbackBox.innerHTML = `<div class="feedback fail">❌ Chưa chính xác. ${safeHtml(result.message || q.explanation || 'Hãy thử lại hoặc xem lại nội dung câu hỏi.')}</div>`;
+      }
+      setTimeout(()=>shell.classList.remove('shake','glow'), 520);
+
+      // Ghi nhận kết quả từng câu
+      if(!session.perQuestionResults) session.perQuestionResults = {};
+      session.perQuestionResults[q.id] = {
+        questionId: q.id,
+        title: q.title,
+        type: q.type,
+        correct: result.correct
+      };
+
+      // Nếu đúng thì sang câu tiếp theo
+      if(result.correct){
+        setTimeout(() => {
+          if(session.currentIndex < cls.questions.length - 1){
+            session.currentIndex++;
+            saveInProgressResult();
+            render();
+          }else{
+            finishStudentSession();
+          }
+        }, 850);
+      }else{
+        saveInProgressResult();
+      }
+    }
+
+    function evaluateQuestion(q, answer){
+      if(q.type === 'mcq'){
+        return {
+          correct: Number(answer) === Number(q.answer),
+          message: Number(answer) === Number(q.answer) ? 'Chọn đáp án chính xác.' : 'Đáp án em chọn chưa đúng.'
+        };
+      }
+
+      if(q.type === 'matching'){
+        const pairs = answer?.pairs || [];
+        const ok = q.answerPairs.length === pairs.length &&
+          q.answerPairs.every(ap => pairs.some(p => normalizeText(p[0])===normalizeText(ap[0]) && normalizeText(p[1])===normalizeText(ap[1])));
+        return {correct: ok, message: ok ? 'Ghép cặp đúng rồi.' : 'Một số cặp nối chưa đúng hoặc còn thiếu.'};
+      }
+
+      if(q.type === 'fill'){
+        const val = normalizeText(answer || '');
+        const ok = q.answers.some(a => normalizeText(a) === val);
+        return {correct: ok, message: ok ? 'Điền đúng khái niệm.' : 'Đáp án chưa khớp, em thử xem lại.'};
+      }
+
+      if(q.type === 'table'){
+        const arr = answer || [];
+        let correctCount = 0;
+        q.tableAnswers.forEach((acc, idx) => {
+          const valid = Array.isArray(acc) ? acc : [acc];
+          const value = normalizeText(arr[idx] || '');
+          if(valid.some(v => normalizeText(v) === value)) correctCount++;
+        });
+        const ok = correctCount === q.tableAnswers.length;
+        return {correct: ok, message: ok ? 'Hoàn thành chính xác bảng.' : `Hiện đúng ${correctCount}/${q.tableAnswers.length} ô.`};
+      }
+
+      return {correct:false,message:'Chưa xác định'};
+    }
+
+    function saveInProgressResult(){
+      const s = appState.studentSession;
+      if(!s) return;
+      const cls = getClassById(s.classId);
+      // Xóa bản in-progress cũ của học sinh
+      cls.results = cls.results.filter(r => !(r.studentId === s.studentId && r.status === 'in-progress'));
+
+      const partialCorrect = Object.values(s.perQuestionResults || {}).filter(x => x.correct).length;
+      const totalQuestions = cls.questions.length;
+      cls.results.push({
+        id: uid('res'),
+        studentId: s.studentId,
+        studentName: s.studentName,
+        classId: s.classId,
+        classCode: s.classCode,
+        startedAt: s.startedAt,
+        finishedAt: '',
+        status: 'in-progress',
+        score: Math.round(partialCorrect*10/totalQuestions),
+        correctCount: partialCorrect,
+        totalQuestions,
+        percent: Math.round((Math.max(0,s.currentIndex))/totalQuestions*100),
+        lastQuestionIndex: s.currentIndex,
+        answers: deepClone(s.answers || {}),
+        perQuestion: Object.values(s.perQuestionResults || {})
+      });
+      setStorage(appState.data);
+    }
+
+    function finishStudentSession(){
+      const s = appState.studentSession;
+      const cls = getClassById(s.classId);
+
+      // Xóa tiến trình tạm
+      cls.results = cls.results.filter(r => !(r.studentId === s.studentId && r.status === 'in-progress'));
+
+      const perQuestion = cls.questions.map(q => s.perQuestionResults?.[q.id] || {
+        questionId: q.id, title:q.title, type:q.type, correct:false
+      });
+      const correctCount = perQuestion.filter(x => x.correct).length;
+      const totalQuestions = cls.questions.length;
+      const score = Math.round(correctCount*10/totalQuestions);
+      const percent = Math.round(correctCount/totalQuestions*100);
+      const finishedAt = nowISO();
+
+      cls.results.push({
+        id: uid('res'),
+        studentId: s.studentId,
+        studentName: s.studentName,
+        classId: s.classId,
+        classCode: s.classCode,
+        startedAt: s.startedAt,
+        finishedAt,
+        status: 'completed',
+        score,
+        correctCount,
+        totalQuestions,
+        percent,
+        lastQuestionIndex: totalQuestions-1,
+        answers: deepClone(s.answers || {}),
+        perQuestion
+      });
+
+      appState.studentSession = {
+        ...s,
+        screen: 'summary',
+        finalScore: score,
+        correctCount,
+        totalQuestions,
+        percent,
+        finishedAt
+      };
+      saveData();
+      toast('Đã lưu kết quả vào lớp và học sinh.', 'success');
+    }
+
+    /* =========================
+       KHỞI ĐỘNG
+    ========================== */
+    document.addEventListener('click', (e) => {
+      if(e.target === $('#modal')) closeModal();
+    });
+
+    initData();
+    render();
+  </script>
+
+</body></html>
